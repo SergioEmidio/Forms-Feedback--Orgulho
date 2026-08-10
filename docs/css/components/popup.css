@@ -1,0 +1,178 @@
+.cb-08-popup,
+.cb-08-popup *,
+.cb-08-popup *::before,
+.cb-08-popup *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.cb-08-popup ::selection {
+  background: var(--color-primary);
+  color: var(--color-bg);
+}
+
+/* ===== OVERLAY (fundo escurecido atrás do pop-up) ===== */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: rgba(5, 5, 16, .78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: cb-08-popup-overlay-in var(--duration-normal) ease both;
+}
+
+.popup-overlay[hidden] {
+  display: none;
+}
+
+/* ===== CAIXA DO POP-UP (mesma linguagem do .cb-08__card) ===== */
+.popup-caixa {
+  --acento: var(--color-primary); /* sobrescrito pelos modificadores .popup-caixa--sucesso / --erro */
+  --acento-ink: var(--color-bg);
+
+  width: min(420px, 100%);
+  font-family: var(--font-family-base);
+  background: linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0)), var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: clamp(24px, 6vw, 36px) clamp(20px, 5vw, 32px) clamp(22px, 5.5vw, 30px);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  color: var(--color-text-primary);
+  animation: cb-08-popup-in var(--duration-slow) var(--ease-emphasized) both;
+}
+
+/* ===== VARIAÇÃO: SUCESSO (verde suave) ===== */
+.popup-caixa--sucesso {
+  --acento: var(--color-success);
+  --acento-ink: var(--color-bg);
+  background:
+    radial-gradient(90% 120% at 50% -10%, rgba(74,222,128,.12) 0%, transparent 55%),
+    linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0)),
+    var(--color-surface);
+  border-color: rgba(74,222,128,.25);
+}
+
+/* ===== VARIAÇÃO: ERRO (vermelho suave) ===== */
+.popup-caixa--erro {
+  --acento: var(--color-danger);
+  --acento-ink: var(--color-bg);
+  background:
+    radial-gradient(90% 120% at 50% -10%, rgba(248,113,113,.12) 0%, transparent 55%),
+    linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0)),
+    var(--color-surface);
+  border-color: rgba(248,113,113,.25);
+}
+
+/* ===== ÍCONE (✓ ou ✗) ===== */
+.popup-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(52px, 12vw, 64px);
+  height: clamp(52px, 12vw, 64px);
+  margin: 0 auto clamp(14px, 3vw, 18px);
+  border-radius: 50%;
+  border: 2px solid var(--acento);
+  color: var(--acento);
+  font-size: clamp(24px, 6vw, 30px);
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* ===== TÍTULO ===== */
+.popup-caixa h2,
+#popup-titulo {
+  font-size: clamp(18px, 4.5vw, 22px);
+  font-weight: 800;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  color: var(--color-text-primary);
+}
+
+/* ===== TEXTO ===== */
+.popup-caixa p:not(.popup-icone),
+#popup-texto {
+  font-size: clamp(13px, 3.5vw, 14px);
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  margin-bottom: clamp(20px, 5vw, 26px);
+}
+
+/* ===== BOTÃO DO POP-UP (mesmo efeito de fill do cb-08__btn) ===== */
+.popup-botao {
+  position: relative;
+  width: 100%;
+  padding: clamp(12px, 3vw, 14px) clamp(18px, 6vw, 32px);
+  border: 2px solid var(--acento);
+  background: transparent;
+  color: var(--acento);
+  font-family: "Arial Narrow", Arial, sans-serif;
+  font-size: clamp(14px, 4vw, 16px);
+  font-weight: 700;
+  letter-spacing: clamp(1px, 0.6vw, 2px);
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  isolation: isolate;
+  transition: color .15s;
+}
+
+.popup-botao::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--acento);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .18s cubic-bezier(.77,0,.18,1);
+}
+
+.popup-botao:hover,
+.popup-botao:focus-visible {
+  color: var(--acento-ink);
+}
+
+.popup-botao:hover::before,
+.popup-botao:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.popup-botao:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+
+/* ===== ANIMAÇÕES DE ENTRADA ===== */
+@keyframes cb-08-popup-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes cb-08-popup-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popup-overlay,
+  .popup-caixa {
+    animation: none;
+  }
+}

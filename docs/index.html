@@ -1,1 +1,156 @@
-Página do FORMULÁRIO (abre por padrão no site)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulário de Avaliação — Apresentação do Projeto</title>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- ===== DIV SUPERIOR: NOME/LOGO DO PROJETO ===== -->
+  <div id="cabecalho-projeto">
+    <!-- Se tiver uma logo, troque o src abaixo. Caso não tenha, pode remover a tag <img>. -->
+    <img src="logo-projeto.png" alt="Logo do projeto">
+    <h1>Nome do Projeto</h1>
+    <p>Avaliação da apresentação — sua opinião nos ajuda a melhorar</p>
+  </div>
+
+  <!-- ===== CONTAINER DO FORMULÁRIO ===== -->
+  <div id="container-formulario">
+    <form id="formulario-avaliacao" action="" method="post">
+
+      <!-- NOME COMPLETO -->
+      <div class="campo" id="div-nome">
+        <label for="nome-completo">
+          Nome completo<span class="obrigatorio">*</span>
+          <span class="status-validacao" id="status-nome-completo"></span>
+        </label>
+        <input type="text" id="nome-completo" name="nome-completo" placeholder="Digite seu nome completo" required>
+        <small class="mensagem-erro" id="erro-nome-completo"></small>
+      </div>
+
+      <!-- DATA DE NASCIMENTO -->
+      <div class="campo" id="div-nascimento">
+        <label for="nascimento">
+          Data de nascimento<span class="obrigatorio">*</span>
+          <span class="status-validacao" id="status-nascimento"></span>
+        </label>
+        <input type="date" id="nascimento" name="nascimento" required>
+        <small class="mensagem-erro" id="erro-nascimento"></small>
+      </div>
+
+      <!-- TIPO DE PARTICIPANTE -->
+      <div class="campo" id="div-tipo-participante">
+        <label>Você é: <span class="obrigatorio">*</span>
+          <span class="status-validacao" id="status-tipo-participante"></span>
+        </label>
+
+        <div class="opcao-item">
+          <input type="radio" id="tipo-aluno" name="tipo-participante" value="Aluno" required>
+          <label for="tipo-aluno">Aluno</label>
+        </div>
+
+        <div class="opcao-item">
+          <input type="radio" id="tipo-ex-aluno" name="tipo-participante" value="Ex-aluno">
+          <label for="tipo-ex-aluno">Ex-aluno</label>
+        </div>
+
+        <div class="opcao-item">
+          <input type="radio" id="tipo-responsavel" name="tipo-participante" value="Responsável">
+          <label for="tipo-responsavel">Responsável</label>
+        </div>
+
+        <div class="opcao-item">
+          <input type="radio" id="tipo-outro" name="tipo-participante" value="Outro">
+          <label for="tipo-outro">Outro</label>
+        </div>
+        <small class="mensagem-erro" id="erro-tipo-participante"></small>
+      </div>
+
+      <!-- NOTA -->
+      <div class="campo" id="div-nota">
+        <label>Qual nota você dá para a apresentação? <span class="obrigatorio">*</span>
+          <span class="status-validacao" id="status-nota"></span>
+        </label>
+
+        <div class="nota-item">
+          <input type="radio" id="nota-1" name="nota" value="1" required>
+          <label for="nota-1">1</label>
+        </div>
+        <div class="nota-item">
+          <input type="radio" id="nota-2" name="nota" value="2">
+          <label for="nota-2">2</label>
+        </div>
+        <div class="nota-item">
+          <input type="radio" id="nota-3" name="nota" value="3">
+          <label for="nota-3">3</label>
+        </div>
+        <div class="nota-item">
+          <input type="radio" id="nota-4" name="nota" value="4">
+          <label for="nota-4">4</label>
+        </div>
+        <div class="nota-item">
+          <input type="radio" id="nota-5" name="nota" value="5">
+          <label for="nota-5">5</label>
+        </div>
+        <div class="nota-item">
+          <input type="radio" id="nota-6" name="nota" value="6">
+          <label for="nota-6">6</label>
+        </div>
+        <div class="nota-item">
+          <input type="radio" id="nota-7" name="nota" value="7">
+          <label for="nota-7">7</label>
+        </div>
+        <div class="nota-item">
+          <input type="radio" id="nota-8" name="nota" value="8">
+          <label for="nota-8">8</label>
+        </div>
+        <div class="nota-item">
+          <input type="radio" id="nota-9" name="nota" value="9">
+          <label for="nota-9">9</label>
+        </div>
+        <div class="nota-item">
+          <input type="radio" id="nota-10" name="nota" value="10">
+          <label for="nota-10">10</label>
+        </div>
+        <small class="mensagem-erro" id="erro-nota"></small>
+      </div>
+
+      <!-- OPINIÃO / PONTOS DE MELHORIA (OPCIONAL) -->
+      <div class="campo" id="div-opiniao">
+        <label for="opiniao">
+          Opinião e pontos de melhoria
+          <span class="opcional-texto">(opcional)</span>
+        </label>
+        <textarea id="opiniao" name="opiniao" maxlength="700" placeholder="Conte o que você achou da apresentação e o que poderia melhorar..."></textarea>
+        <small class="contador-caracteres" id="contador-opiniao">0/700</small>
+        <small class="mensagem-erro" id="erro-opiniao"></small>
+      </div>
+
+      <!-- BOTÃO ENVIAR (componente cb-08) -->
+      <div class="campo" id="div-enviar">
+        <div class="cb-08">
+          <button type="submit" class="cb-08__btn" data-text="ENVIAR AVALIAÇÃO">
+            <span class="cb-08__fill"></span>
+            <span class="cb-08__label">ENVIAR AVALIAÇÃO</span>
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ===== POP-UP DE RESULTADO DO ENVIO ===== -->
+  <div id="popup-overlay" class="popup-overlay" hidden>
+    <div class="popup-caixa" role="alertdialog" aria-labelledby="popup-titulo" aria-describedby="popup-texto">
+      <p id="popup-icone" class="popup-icone"></p>
+      <h2 id="popup-titulo"></h2>
+      <p id="popup-texto"></p>
+      <button id="popup-botao" type="button"></button>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/form.js"></script>
+</body>
+</html>

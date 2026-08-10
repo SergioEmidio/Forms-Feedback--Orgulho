@@ -1,1 +1,136 @@
-/*← Estilo específico só da página do formulário*\
+/* ============================================================
+   FORM PAGE — layout específico da página do formulário.
+   Mobile-first: estilo base pensado pro celular, melhorado
+   progressivamente em telas maiores.
+   ============================================================ */
+
+body {
+  padding: var(--space-6) var(--space-4) var(--space-16);
+  background:
+    radial-gradient(90% 60% at 20% -10%, rgba(255, 0, 64, 0.08) 0%, transparent 55%),
+    radial-gradient(80% 60% at 100% 0%, rgba(0, 255, 249, 0.08) 0%, transparent 60%),
+    var(--color-bg);
+}
+
+/* ===== CABEÇALHO / LOGO DO PROJETO ===== */
+#cabecalho-projeto {
+  max-width: var(--container-max-width);
+  margin: 0 auto var(--space-6);
+  text-align: center;
+}
+
+#cabecalho-projeto img {
+  max-height: 64px;
+  margin: 0 auto var(--space-3);
+}
+
+#cabecalho-projeto h1 {
+  margin-bottom: var(--space-2);
+}
+
+#cabecalho-projeto p {
+  font-size: var(--text-sm);
+}
+
+/* ===== CONTAINER DO FORMULÁRIO ===== */
+#container-formulario {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0)), var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-4);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===== CADA CAMPO ===== */
+.campo {
+  margin-bottom: var(--space-6);
+}
+
+.campo:last-child {
+  margin-bottom: 0;
+}
+
+.obrigatorio {
+  color: var(--color-danger);
+  margin-left: var(--space-1);
+}
+
+.opcional-texto {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-xs);
+  margin-left: var(--space-1);
+}
+
+.campo label > .status-validacao,
+.campo label {
+  margin-bottom: var(--space-2);
+}
+
+/* ===== TIPO DE PARTICIPANTE: empilhado no celular ===== */
+#div-tipo-participante .opcao-item {
+  margin-bottom: var(--space-2);
+}
+
+#div-tipo-participante .opcao-item:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== NOTA: grade fluida, 5 colunas no celular ===== */
+#div-nota {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.nota-item {
+  flex: 1 1 calc(20% - var(--space-2)); /* 5 por linha */
+  min-width: 44px;
+}
+
+/* ===== CONTADOR DE CARACTERES + BOTÃO ENVIAR ===== */
+#div-enviar {
+  margin-top: var(--space-8);
+}
+
+#div-enviar .cb-08 {
+  min-height: 0; /* o cb-08 original é feito pra tela cheia; aqui ele vira só o card do botão */
+  padding: 0;
+  background: none;
+  display: block;
+}
+
+/* ===== TABLET (a partir de 768px) ===== */
+@media (min-width: 768px) {
+  body {
+    padding: var(--space-10) var(--space-6) var(--space-16);
+  }
+
+  #container-formulario {
+    padding: var(--space-8);
+  }
+
+  #div-tipo-participante {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+  }
+
+  #div-tipo-participante .opcao-item {
+    margin-bottom: 0;
+  }
+
+  .nota-item {
+    flex: 1 1 calc(10% - var(--space-2)); /* 10 por linha, uma linha só */
+  }
+}
+
+/* ===== NOTEBOOK/DESKTOP (a partir de 1024px) ===== */
+@media (min-width: 1024px) {
+  body {
+    padding: var(--space-12) var(--space-6) var(--space-16);
+  }
+}

@@ -1,17 +1,21 @@
-/*← Arquivo "montador": importa todos os outros na ordem certa*\
-/* css/main.css */
+/* ============================================================
+   MAIN — ponto único de entrada do CSS. A ordem importa:
+   tokens primeiro, depois base, depois componentes, depois página.
+   O index.html só precisa linkar ESTE arquivo.
+   ============================================================ */
 
-/* Base — sempre primeiro */
-@import 'base/reset.css';
-@import 'base/variables.css';
-@import 'base/typography.css';
+/* 1. Tokens (variáveis usadas por tudo abaixo) */
+@import url("base/variables.css");
 
-/* Componentes reutilizáveis */
-@import 'components/buttons.css';
-@import 'components/input.css';
-@import 'components/card.css';
-@import 'components/navbar.css';
+/* 2. Base (reset + tipografia) */
+@import url("base/reset.css");
+@import url("base/typography.css");
 
-/* Específico de cada página */
-@import 'pages/form.css';
-@import 'pages/dashboard.css';
+/* 3. Componentes reutilizáveis */
+@import url("components/input.css");
+@import url("components/button.css");
+@import url("components/popup.css");
+@import url("components/status-campo.css");
+
+/* 4. Página específica (por último, pra poder sobrescrever componentes se preciso) */
+@import url("pages/form.css");

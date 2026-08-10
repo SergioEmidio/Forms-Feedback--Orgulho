@@ -1,1 +1,123 @@
-/* ← Estilo dos campos do formulário (input, textarea, checkbox)*\
+/* ============================================================
+   INPUTS — campos de texto, data, textarea e opções (radio).
+   ============================================================ */
+
+input[type="text"],
+input[type="date"],
+textarea {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  transition: border-color var(--duration-normal) var(--ease-standard),
+    box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+input[type="text"]:hover,
+input[type="date"]:hover,
+textarea:hover {
+  border-color: var(--color-border-subtle);
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 255, 249, 0.15);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: var(--line-height-relaxed);
+}
+
+/* input[type=date] no dark theme: o ícone nativo do navegador precisa de ajuste pra não ficar escuro sobre escuro */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.5);
+  cursor: pointer;
+}
+
+/* ===== RADIOS (tipo de participante e nota) ===== */
+.opcao-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.opcao-item input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  min-width: 20px; /* impede o rádio de encolher em telas estreitas */
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.opcao-item input[type="radio"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  transform: scale(0);
+  transition: transform var(--duration-fast) var(--ease-emphasized);
+}
+
+.opcao-item input[type="radio"]:checked {
+  border-color: var(--color-primary);
+}
+
+.opcao-item input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+.opcao-item label {
+  cursor: pointer;
+  font-weight: var(--font-weight-regular);
+}
+
+/* ===== NOTA (grade de botões 1–10) ===== */
+.nota-item input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nota-item label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px; /* área de toque confortável em mobile */
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.nota-item input[type="radio"]:checked + label {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.nota-item input[type="radio"]:focus-visible + label {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
