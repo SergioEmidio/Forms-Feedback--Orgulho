@@ -81,12 +81,35 @@
   cursor: pointer;
   overflow: hidden;
   user-select: none;
-  transition: color .1s;
+  transition: color .1s, border-color var(--duration-normal) var(--ease-standard), opacity var(--duration-normal) var(--ease-standard);
 }
 
 .cb-08__btn:focus-visible {
   outline: 2px solid var(--c);
   outline-offset: 3px;
+}
+
+/* ===== ESTADO: AINDA FALTAM CAMPOS OBRIGATÓRIOS (0/4 a 3/4) ===== */
+.cb-08__btn:disabled {
+  cursor: not-allowed;
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.cb-08__btn:disabled:hover {
+  color: var(--color-text-muted); /* ignora o hover normal enquanto está bloqueado */
+}
+
+/* ===== ESTADO: PRONTO (4/4 preenchido, clicável) =====
+   Fica com a mesma aparência "preenchida" que o hover normal já tinha,
+   sem precisar do mouse em cima — assim a pessoa reconhece que já pode enviar. */
+.cb-08__btn.cb-08__btn--pronto {
+  color: var(--color-bg);
+  border-color: #fff;
+}
+
+.cb-08__btn.cb-08__btn--pronto .cb-08__fill {
+  transform: scaleX(1);
 }
 
 .cb-08__fill {

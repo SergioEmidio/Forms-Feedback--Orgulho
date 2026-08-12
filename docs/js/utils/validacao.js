@@ -71,11 +71,24 @@ export function validarNascimento(valor) {
 }
 
 // ---------- TIPO DE PARTICIPANTE ----------
-export function validarTipoParticipante(valor) {
+// "detalheOutro" só é obrigatório quando valor === 'Outro'; nos demais casos é ignorado.
+export function validarTipoParticipante(valor, detalheOutro) {
   const opcoesValidas = ['Aluno', 'Ex-aluno', 'Responsável', 'Outro'];
 
   if (!valor || !opcoesValidas.includes(valor)) {
     return { valido: false, mensagem: 'Selecione uma opção.' };
+  }
+
+  if (valor === 'Outro') {
+    const detalhe = (detalheOutro || '').trim();
+
+    if (!detalhe) {
+      return { valido: false, mensagem: 'Descreva o que você é no campo que apareceu abaixo.' };
+    }
+
+    if (detalhe.length < 2) {
+      return { valido: false, mensagem: 'Escreva pelo menos 2 caracteres.' };
+    }
   }
 
   return { valido: true, mensagem: '' };
@@ -117,7 +130,7 @@ export function validarFormulario(respostas) {
   const resultado = {
     'nome-completo': validarNome(respostas['nome-completo']),
     nascimento: validarNascimento(respostas['nascimento']),
-    'tipo-participante': validarTipoParticipante(respostas['tipo-participante']),
+    'tipo-participante': validarTipoParticipante(respostas['tipo-participante'], respostas['outro-detalhe']),
     nota: validarNota(respostas['nota']),
     opiniao: validarOpiniao(respostas['opiniao']),
   };

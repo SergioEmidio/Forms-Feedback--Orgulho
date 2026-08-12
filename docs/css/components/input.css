@@ -91,33 +91,41 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-weight: var(--font-weight-regular);
 }
 
-/* ===== NOTA (grade de botões 1–10) ===== */
+/* ===== NOTA: estrelas ===== */
 .nota-item input[type="radio"] {
   position: absolute;
   opacity: 0;
-  pointer-events: none;
+  width: 1px;
+  height: 1px;
+  overflow: hidden; /* mantém acessível pro teclado/leitor de tela, mas invisível na tela */
 }
 
-.nota-item label {
-  display: flex;
+.nota-item .estrela {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px; /* área de toque confortável em mobile */
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-text-secondary);
-  font-weight: var(--font-weight-bold);
+  width: clamp(28px, 7vw, 40px);
+  height: clamp(28px, 7vw, 40px);
+  font-size: clamp(22px, 6vw, 32px);
+  line-height: 1;
+  color: var(--color-border);
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-standard);
+  user-select: none;
+  transition: color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-emphasized);
 }
 
-.nota-item input[type="radio"]:checked + label {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-bg);
+.nota-item .estrela:hover {
+  transform: scale(1.12);
 }
 
-.nota-item input[type="radio"]:focus-visible + label {
+.nota-item input[type="radio"]:focus-visible + .estrela {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Preenchida via JS (form.js decide quais estrelas ficam ativas, da esquerda pra nota escolhida) */
+.nota-item .estrela.preenchida {
+  color: var(--color-primary);
 }

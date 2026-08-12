@@ -78,7 +78,7 @@ export function popupErro(aoConfirmar) {
   abrirPopup({
     tipo: 'erro',
     titulo: 'Formulário incorreto',
-    texto: 'Alguns campos precisam ser corrigidos antes de enviar.',
+    texto: 'Você não preencheu as informações corretamente. Revise os campos destacados em vermelho.',
     textoBotao: 'Completar formulário',
     aoConfirmar,
   });

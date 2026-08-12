@@ -119,6 +119,8 @@
   font-weight: 700;
   letter-spacing: clamp(1px, 0.6vw, 2px);
   text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   border-radius: 8px;
   cursor: pointer;
   overflow: hidden;

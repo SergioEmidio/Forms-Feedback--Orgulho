@@ -18,7 +18,7 @@
 
   <!-- ===== CONTAINER DO FORMULÁRIO ===== -->
   <div id="container-formulario">
-    <form id="formulario-avaliacao" action="" method="post">
+    <form id="formulario-avaliacao" action="" method="post" novalidate>
 
       <!-- NOME COMPLETO -->
       <div class="campo" id="div-nome">
@@ -65,6 +65,11 @@
           <input type="radio" id="tipo-outro" name="tipo-participante" value="Outro">
           <label for="tipo-outro">Outro</label>
         </div>
+
+        <div class="opcao-outro-detalhe oculto" id="div-outro-detalhe">
+          <label for="outro-detalhe" class="rotulo-pequeno">Digite aqui o que você é</label>
+          <input type="text" id="outro-detalhe" name="outro-detalhe" placeholder="Ex: Professor, funcionário, visitante...">
+        </div>
         <small class="mensagem-erro" id="erro-tipo-participante"></small>
       </div>
 
@@ -74,46 +79,49 @@
           <span class="status-validacao" id="status-nota"></span>
         </label>
 
-        <div class="nota-item">
-          <input type="radio" id="nota-1" name="nota" value="1" required>
-          <label for="nota-1">1</label>
+        <div class="avaliacao-estrelas" id="avaliacao-estrelas">
+          <div class="nota-item">
+            <input type="radio" id="nota-1" name="nota" value="1" required>
+            <label for="nota-1" class="estrela" aria-label="Nota 1 de 10">★</label>
+          </div>
+          <div class="nota-item">
+            <input type="radio" id="nota-2" name="nota" value="2">
+            <label for="nota-2" class="estrela" aria-label="Nota 2 de 10">★</label>
+          </div>
+          <div class="nota-item">
+            <input type="radio" id="nota-3" name="nota" value="3">
+            <label for="nota-3" class="estrela" aria-label="Nota 3 de 10">★</label>
+          </div>
+          <div class="nota-item">
+            <input type="radio" id="nota-4" name="nota" value="4">
+            <label for="nota-4" class="estrela" aria-label="Nota 4 de 10">★</label>
+          </div>
+          <div class="nota-item">
+            <input type="radio" id="nota-5" name="nota" value="5">
+            <label for="nota-5" class="estrela" aria-label="Nota 5 de 10">★</label>
+          </div>
+          <div class="nota-item">
+            <input type="radio" id="nota-6" name="nota" value="6">
+            <label for="nota-6" class="estrela" aria-label="Nota 6 de 10">★</label>
+          </div>
+          <div class="nota-item">
+            <input type="radio" id="nota-7" name="nota" value="7">
+            <label for="nota-7" class="estrela" aria-label="Nota 7 de 10">★</label>
+          </div>
+          <div class="nota-item">
+            <input type="radio" id="nota-8" name="nota" value="8">
+            <label for="nota-8" class="estrela" aria-label="Nota 8 de 10">★</label>
+          </div>
+          <div class="nota-item">
+            <input type="radio" id="nota-9" name="nota" value="9">
+            <label for="nota-9" class="estrela" aria-label="Nota 9 de 10">★</label>
+          </div>
+          <div class="nota-item">
+            <input type="radio" id="nota-10" name="nota" value="10">
+            <label for="nota-10" class="estrela" aria-label="Nota 10 de 10">★</label>
+          </div>
         </div>
-        <div class="nota-item">
-          <input type="radio" id="nota-2" name="nota" value="2">
-          <label for="nota-2">2</label>
-        </div>
-        <div class="nota-item">
-          <input type="radio" id="nota-3" name="nota" value="3">
-          <label for="nota-3">3</label>
-        </div>
-        <div class="nota-item">
-          <input type="radio" id="nota-4" name="nota" value="4">
-          <label for="nota-4">4</label>
-        </div>
-        <div class="nota-item">
-          <input type="radio" id="nota-5" name="nota" value="5">
-          <label for="nota-5">5</label>
-        </div>
-        <div class="nota-item">
-          <input type="radio" id="nota-6" name="nota" value="6">
-          <label for="nota-6">6</label>
-        </div>
-        <div class="nota-item">
-          <input type="radio" id="nota-7" name="nota" value="7">
-          <label for="nota-7">7</label>
-        </div>
-        <div class="nota-item">
-          <input type="radio" id="nota-8" name="nota" value="8">
-          <label for="nota-8">8</label>
-        </div>
-        <div class="nota-item">
-          <input type="radio" id="nota-9" name="nota" value="9">
-          <label for="nota-9">9</label>
-        </div>
-        <div class="nota-item">
-          <input type="radio" id="nota-10" name="nota" value="10">
-          <label for="nota-10">10</label>
-        </div>
+        <p class="nota-texto" id="nota-texto">Toque em uma estrela para avaliar</p>
         <small class="mensagem-erro" id="erro-nota"></small>
       </div>
 
@@ -131,7 +139,7 @@
       <!-- BOTÃO ENVIAR (componente cb-08) -->
       <div class="campo" id="div-enviar">
         <div class="cb-08">
-          <button type="submit" class="cb-08__btn" data-text="ENVIAR AVALIAÇÃO">
+          <button type="submit" class="cb-08__btn" data-text="ENVIAR AVALIAÇÃO" disabled>
             <span class="cb-08__fill"></span>
             <span class="cb-08__label">ENVIAR AVALIAÇÃO</span>
           </button>
@@ -147,7 +155,7 @@
       <p id="popup-icone" class="popup-icone"></p>
       <h2 id="popup-titulo"></h2>
       <p id="popup-texto"></p>
-      <button id="popup-botao" type="button"></button>
+      <button id="popup-botao" class="popup-botao" type="button"></button>
     </div>
   </div>
 
