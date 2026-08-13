@@ -89,14 +89,17 @@
   outline-offset: 3px;
 }
 
-/* ===== ESTADO: AINDA FALTAM CAMPOS OBRIGATÓRIOS (0/4 a 3/4) ===== */
-.cb-08__btn:disabled {
+/* ===== ESTADO: AINDA FALTAM CAMPOS OBRIGATÓRIOS (0/4 a 3/4) =====
+   Usa classe em vez de :disabled real, porque um <button disabled> de
+   verdade não dispara clique nenhum — e precisamos do clique pra
+   mostrar a animação de balanço avisando "ainda não dá". */
+.cb-08__btn--bloqueado {
   cursor: not-allowed;
   border-color: var(--color-border);
   color: var(--color-text-muted);
 }
 
-.cb-08__btn:disabled:hover {
+.cb-08__btn--bloqueado:hover {
   color: var(--color-text-muted); /* ignora o hover normal enquanto está bloqueado */
 }
 
@@ -110,6 +113,47 @@
 
 .cb-08__btn.cb-08__btn--pronto .cb-08__fill {
   transform: scaleX(1);
+}
+
+/* ===== BALANÇO: feedback ao clicar enquanto ainda está bloqueado ===== */
+@keyframes cb-08-btn-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+.cb-08__btn--balancar {
+  animation: cb-08-btn-shake 220ms ease-in-out;
+}
+
+/* ===== SPINNER DE CARREGAMENTO (durante o envio) ===== */
+.cb-08__spinner {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--radius-full);
+  z-index: 2;
+}
+
+.cb-08__btn[aria-busy="true"] .cb-08__spinner {
+  display: block;
+  animation: cb-08-spin 700ms linear infinite;
+}
+
+.cb-08__btn[aria-busy="true"] .cb-08__label {
+  opacity: 0;
+}
+
+@keyframes cb-08-spin {
+  to { transform: rotate(360deg); }
 }
 
 .cb-08__fill {

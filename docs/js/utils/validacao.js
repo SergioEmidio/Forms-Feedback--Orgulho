@@ -109,6 +109,15 @@ export function validarNota(valor) {
   return { valido: true, mensagem: '' };
 }
 
+// ---------- CONSENTIMENTO ----------
+export function validarConsentimento(valor) {
+  if (valor !== 'sim') {
+    return { valido: false, mensagem: 'É necessário concordar para enviar o formulário.' };
+  }
+
+  return { valido: true, mensagem: '' };
+}
+
 // ---------- OPINIÃO (OPCIONAL) ----------
 export function validarOpiniao(valor) {
   const texto = valor || '';
@@ -132,6 +141,7 @@ export function validarFormulario(respostas) {
     nascimento: validarNascimento(respostas['nascimento']),
     'tipo-participante': validarTipoParticipante(respostas['tipo-participante'], respostas['outro-detalhe']),
     nota: validarNota(respostas['nota']),
+    consentimento: validarConsentimento(respostas['consentimento']),
     opiniao: validarOpiniao(respostas['opiniao']),
   };
 

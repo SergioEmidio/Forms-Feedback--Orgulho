@@ -1,5 +1,3 @@
-// Mostrar mensagens de sucesso/erro na tela (reutilizável) //
-
 // components/mensagem.js
 // Componente reutilizável de feedback por campo.
 // Espera que cada campo do HTML siga o padrão de IDs:
@@ -25,6 +23,12 @@ export function atualizarStatusCampo(nomeCampo, resultado) {
     statusEl.className = resultado.valido
       ? 'status-validacao status-validacao--ok'
       : 'status-validacao status-validacao--erro';
+
+    // Retrigger do pulso: remove, força o navegador a "esquecer" a animação
+    // anterior, e adiciona de novo — assim ele pulsa toda vez, não só na primeira.
+    statusEl.classList.remove('status-validacao--pulso');
+    void statusEl.offsetWidth;
+    statusEl.classList.add('status-validacao--pulso');
   }
 
   if (erroEl) {

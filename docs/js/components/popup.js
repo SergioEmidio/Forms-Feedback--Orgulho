@@ -37,6 +37,12 @@ export function abrirPopup({ tipo, titulo: tituloTexto, texto: corpoTexto, texto
   texto.textContent = corpoTexto;
   botao.textContent = textoBotao;
 
+  // Retrigger da animação do ícone: sem isso, ela só rodaria na primeira vez
+  // que o elemento existe na página, não a cada popup novo.
+  icone.classList.remove('popup-icone--anim');
+  void icone.offsetWidth;
+  icone.classList.add('popup-icone--anim');
+
   overlay.hidden = false;
   document.body.style.overflow = 'hidden'; // trava o scroll de fundo enquanto o popup está aberto
 

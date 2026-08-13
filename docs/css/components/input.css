@@ -91,7 +91,53 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-weight: var(--font-weight-regular);
 }
 
-/* ===== NOTA: estrelas ===== */
+/* ===== CHECKBOX (ex: consentimento) — mesma base do radio, formato quadrado ===== */
+.opcao-item--checkbox input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  flex-shrink: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard);
+}
+
+.opcao-item--checkbox input[type="checkbox"]::before {
+  content: "";
+  width: 11px;
+  height: 6px;
+  border-left: 2px solid var(--color-bg);
+  border-bottom: 2px solid var(--color-bg);
+  transform: rotate(-45deg) scale(0);
+  transition: transform var(--duration-fast) var(--ease-emphasized);
+}
+
+.opcao-item--checkbox input[type="checkbox"]:checked {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+
+.opcao-item--checkbox input[type="checkbox"]:checked::before {
+  transform: rotate(-45deg) scale(1);
+}
+
+.opcao-item--checkbox input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.opcao-item--checkbox label {
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-secondary);
+}
 .nota-item input[type="radio"] {
   position: absolute;
   opacity: 0;

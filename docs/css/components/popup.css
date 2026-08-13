@@ -86,6 +86,27 @@
   line-height: 1;
 }
 
+/* Entrada do ícone: "desenha" o círculo com um leve bounce antes de acomodar.
+   Reaplicada via JS (classe --anim) toda vez que o popup abre. */
+@keyframes popup-icone-entrada {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.popup-icone--anim {
+  animation: popup-icone-entrada 480ms var(--ease-emphasized) both;
+}
+
 /* ===== TÍTULO ===== */
 .popup-caixa h2,
 #popup-titulo {

@@ -33,6 +33,17 @@
   color: var(--color-danger);
 }
 
+/* Pulso de destaque no exato momento em que o status muda (retrigger via JS) */
+@keyframes pulso-validacao {
+  0% { text-shadow: 0 0 0 transparent; }
+  40% { text-shadow: 0 0 10px currentColor; }
+  100% { text-shadow: 0 0 0 transparent; }
+}
+
+.status-validacao--pulso {
+  animation: pulso-validacao 400ms ease-out;
+}
+
 /* ===== MENSAGEM DE ERRO ABAIXO DO CAMPO ===== */
 .mensagem-erro {
   display: block;

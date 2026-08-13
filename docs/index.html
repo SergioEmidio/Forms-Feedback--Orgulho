@@ -8,6 +8,15 @@
 </head>
 <body>
 
+  <!-- ===== NAVEGAÇÃO ENTRE AS PÁGINAS ===== -->
+  <nav class="navbar-projeto" aria-label="Navegação principal">
+    <span class="navbar-projeto__marca">Nome do Projeto</span>
+    <div class="navbar-projeto__links">
+      <a href="index.html" class="navbar-projeto__link navbar-projeto__link--ativo" aria-current="page">Formulário</a>
+      <a href="dashboard.html" class="navbar-projeto__link">Dashboard</a>
+    </div>
+  </nav>
+
   <!-- ===== DIV SUPERIOR: NOME/LOGO DO PROJETO ===== -->
   <div id="cabecalho-projeto">
     <!-- Se tiver uma logo, troque o src abaixo. Caso não tenha, pode remover a tag <img>. -->
@@ -27,7 +36,7 @@
           <span class="status-validacao" id="status-nome-completo"></span>
         </label>
         <input type="text" id="nome-completo" name="nome-completo" placeholder="Digite seu nome completo" required>
-        <small class="mensagem-erro" id="erro-nome-completo"></small>
+        <small class="mensagem-erro" id="erro-nome-completo" aria-live="polite"></small>
       </div>
 
       <!-- DATA DE NASCIMENTO -->
@@ -37,7 +46,7 @@
           <span class="status-validacao" id="status-nascimento"></span>
         </label>
         <input type="date" id="nascimento" name="nascimento" required>
-        <small class="mensagem-erro" id="erro-nascimento"></small>
+        <small class="mensagem-erro" id="erro-nascimento" aria-live="polite"></small>
       </div>
 
       <!-- TIPO DE PARTICIPANTE -->
@@ -70,7 +79,7 @@
           <label for="outro-detalhe" class="rotulo-pequeno">Digite aqui o que você é</label>
           <input type="text" id="outro-detalhe" name="outro-detalhe" placeholder="Ex: Professor, funcionário, visitante...">
         </div>
-        <small class="mensagem-erro" id="erro-tipo-participante"></small>
+        <small class="mensagem-erro" id="erro-tipo-participante" aria-live="polite"></small>
       </div>
 
       <!-- NOTA -->
@@ -121,8 +130,8 @@
             <label for="nota-10" class="estrela" aria-label="Nota 10 de 10">★</label>
           </div>
         </div>
-        <p class="nota-texto" id="nota-texto">Toque em uma estrela para avaliar</p>
-        <small class="mensagem-erro" id="erro-nota"></small>
+        <p class="nota-texto" id="nota-texto" aria-live="polite">Toque em uma estrela para avaliar</p>
+        <small class="mensagem-erro" id="erro-nota" aria-live="polite"></small>
       </div>
 
       <!-- OPINIÃO / PONTOS DE MELHORIA (OPCIONAL) -->
@@ -133,15 +142,28 @@
         </label>
         <textarea id="opiniao" name="opiniao" maxlength="700" placeholder="Conte o que você achou da apresentação e o que poderia melhorar..."></textarea>
         <small class="contador-caracteres" id="contador-opiniao">0/700</small>
-        <small class="mensagem-erro" id="erro-opiniao"></small>
+        <small class="mensagem-erro" id="erro-opiniao" aria-live="polite"></small>
+      </div>
+
+      <!-- CONSENTIMENTO -->
+      <div class="campo" id="div-consentimento">
+        <div class="opcao-item opcao-item--checkbox">
+          <input type="checkbox" id="consentimento" name="consentimento" value="sim">
+          <label for="consentimento">
+            Concordo com o uso dos meus dados apenas para fins desta avaliação escolar.
+            <span class="obrigatorio">*</span>
+          </label>
+        </div>
+        <small class="mensagem-erro" id="erro-consentimento" aria-live="polite"></small>
       </div>
 
       <!-- BOTÃO ENVIAR (componente cb-08) -->
       <div class="campo" id="div-enviar">
         <div class="cb-08">
-          <button type="submit" class="cb-08__btn" data-text="ENVIAR AVALIAÇÃO" disabled>
+          <button type="submit" class="cb-08__btn" data-text="ENVIAR AVALIAÇÃO" aria-disabled="true">
             <span class="cb-08__fill"></span>
             <span class="cb-08__label">ENVIAR AVALIAÇÃO</span>
+            <span class="cb-08__spinner" aria-hidden="true"></span>
           </button>
         </div>
       </div>

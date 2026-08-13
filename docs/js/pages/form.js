@@ -8,6 +8,7 @@ import {
   validarNascimento,
   validarTipoParticipante,
   validarNota,
+  validarConsentimento,
   validarOpiniao,
   validarFormulario,
 } from '../utils/validacao.js';
@@ -21,6 +22,7 @@ const campoOpiniao = document.getElementById('opiniao');
 const contadorOpiniao = document.getElementById('contador-opiniao');
 
 // ---------- ESTRELAS DA NOTA ----------
+const containerEstrelas = document.getElementById('avaliacao-estrelas');
 const estrelas = Array.from(document.querySelectorAll('#avaliacao-estrelas .estrela'));
 const notaTexto = document.getElementById('nota-texto');
 
@@ -29,17 +31,17 @@ const radioOutro = document.getElementById('tipo-outro');
 const divOutroDetalhe = document.getElementById('div-outro-detalhe');
 const inputOutroDetalhe = document.getElementById('outro-detalhe');
 
-// Campos que contam pro progresso do botão (as 4 obrigatórias)
-const CAMPOS_PROGRESSO = ['nome-completo', 'nascimento', 'tipo-participante', 'nota'];
+// Campos que contam pro progresso do botão (agora 5 obrigatórias, com o consentimento)
+const CAMPOS_PROGRESSO = ['nome-completo', 'nascimento', 'tipo-participante', 'nota', 'consentimento'];
 
-// Mapeia o nome do campo (usado nos IDs status-*/erro-*) pro elemento que deve
-// receber o foco e a classe visual (campo-valido/campo-invalido) quando validado.
 // Wrapper: valida "Você é" já considerando o campo de detalhe do "Outro",
 // que fica fora do fluxo normal de FormData quando escondido.
 function validarTipoComDetalhe(valor) {
   return validarTipoParticipante(valor, inputOutroDetalhe.value);
 }
 
+// Mapeia o nome do campo (usado nos IDs status-*/erro-*) pro elemento que deve
+// receber o foco e a classe visual (campo-valido/campo-invalido) quando validado.
 const CAMPOS = {
   'nome-completo': {
     elemento: document.getElementById('nome-completo'),
@@ -58,6 +60,11 @@ const CAMPOS = {
   nota: {
     elemento: document.getElementById('nota-1'),
     validar: validarNota,
+    semClasseEstado: true,
+  },
+  consentimento: {
+    elemento: document.getElementById('consentimento'),
+    validar: validarConsentimento,
     semClasseEstado: true,
   },
   opiniao: {
@@ -113,6 +120,25 @@ function atualizarEstrelas(valor) {
   }
 }
 
+// Preview temporário no hover: mostra até a estrela sob o mouse, sem confirmar nada
+function previsualizarEstrelas(valor) {
+  estrelas.forEach((estrela, index) => {
+    estrela.classList.toggle('preenchida', index < valor);
+  });
+}
+
+estrelas.forEach((estrela, index) => {
+  estrela.addEventListener('mouseenter', function () {
+    previsualizarEstrelas(index + 1);
+  });
+});
+
+// Ao tirar o mouse de cima de toda a fileira de estrelas, volta pro valor realmente selecionado
+containerEstrelas.addEventListener('mouseleave', function () {
+  const marcado = formulario.querySelector('input[name="nota"]:checked');
+  atualizarEstrelas(marcado ? marcado.value : 0);
+});
+
 // ---------- CAMPO "OUTRO": mostra/esconde o input de detalhe ----------
 function atualizarOutroDetalhe() {
   const marcado = radioOutro.checked;
@@ -139,14 +165,23 @@ function atualizarProgressoBotao() {
   const total = CAMPOS_PROGRESSO.length;
 
   if (progresso >= total) {
-    botaoEnviar.disabled = false;
+    botaoEnviar.classList.remove('cb-08__btn--bloqueado');
     botaoEnviar.classList.add('cb-08__btn--pronto');
+    botaoEnviar.removeAttribute('aria-disabled');
     fillBotaoEnviar.style.transform = ''; // devolve o controle pro CSS (hover normal)
   } else {
-    botaoEnviar.disabled = true;
+    botaoEnviar.classList.add('cb-08__btn--bloqueado');
     botaoEnviar.classList.remove('cb-08__btn--pronto');
+    botaoEnviar.setAttribute('aria-disabled', 'true');
     fillBotaoEnviar.style.transform = `scaleX(${progresso / total})`;
   }
+}
+
+// ---------- BALANÇO: feedback ao tentar enviar/clicar ainda bloqueado ----------
+function dispararBalancoBotao() {
+  botaoEnviar.classList.remove('cb-08__btn--balancar');
+  void botaoEnviar.offsetWidth; // força reflow, permite repetir a animação em cliques seguidos
+  botaoEnviar.classList.add('cb-08__btn--balancar');
 }
 
 // ---------- VALIDAÇÃO EM TEMPO REAL (ao sair do campo) ----------
@@ -189,6 +224,11 @@ formulario.querySelectorAll('input[name="nota"]').forEach((radio) => {
   });
 });
 
+document.getElementById('consentimento').addEventListener('change', function () {
+  validarCampo('consentimento', this.checked ? 'sim' : '');
+  atualizarProgressoBotao();
+});
+
 // ---------- CONTADOR DE CARACTERES + VALIDAÇÃO DA OPINIÃO ----------
 campoOpiniao.addEventListener('input', function () {
   const tamanho = this.value.length;
@@ -228,7 +268,7 @@ function resetarFormularioCompleto() {
 
 // ---------- FOCA NO PRIMEIRO CAMPO COM ERRO ----------
 function focarPrimeiroErro(resultadoValidacao) {
-  const ordem = ['nome-completo', 'nascimento', 'tipo-participante', 'nota', 'opiniao'];
+  const ordem = ['nome-completo', 'nascimento', 'tipo-participante', 'nota', 'consentimento', 'opiniao'];
   const primeiroErro = ordem.find((nome) => !resultadoValidacao.campos[nome].valido);
 
   if (!primeiroErro) return;
@@ -248,6 +288,13 @@ function focarPrimeiroErro(resultadoValidacao) {
 formulario.addEventListener('submit', async function (event) {
   event.preventDefault();
 
+  // Segunda camada de proteção (além do clique): cobre também quem aperta
+  // Enter dentro de um campo de texto, que dispara "submit" sem passar pelo clique.
+  if (botaoEnviar.classList.contains('cb-08__btn--bloqueado')) {
+    dispararBalancoBotao();
+    return;
+  }
+
   const respostas = lerRespostas();
   const validacao = validarFormulario(respostas);
 
@@ -265,7 +312,7 @@ formulario.addEventListener('submit', async function (event) {
   }
 
   // Evita clique duplo enquanto a requisição está em andamento
-  botaoEnviar.disabled = true;
+  botaoEnviar.classList.add('cb-08__btn--bloqueado');
   botaoEnviar.setAttribute('aria-busy', 'true');
 
   try {
@@ -287,20 +334,23 @@ formulario.addEventListener('submit', async function (event) {
       aoConfirmar: () => {},
     });
   } finally {
-    atualizarProgressoBotao(); // reaplica disabled/pronto de acordo com o progresso atual
+    atualizarProgressoBotao(); // reaplica bloqueado/pronto de acordo com o progresso atual
     botaoEnviar.removeAttribute('aria-busy');
   }
 });
 
-// ---------- EFEITO DE GLITCH NO BOTÃO AO CLICAR ----------
-document.querySelectorAll('.cb-08__btn').forEach(function (btn) {
-  btn.addEventListener('click', function () {
-    if (btn.disabled) return; // não faz sentido "glitchar" um botão que ainda está bloqueado
-    btn.classList.add('is-glitching');
-    setTimeout(function () {
-      btn.classList.remove('is-glitching');
-    }, 420);
-  });
+// ---------- CLIQUE NO BOTÃO: balanço se bloqueado, glitch se pronto ----------
+botaoEnviar.addEventListener('click', function (event) {
+  if (botaoEnviar.classList.contains('cb-08__btn--bloqueado')) {
+    event.preventDefault();
+    dispararBalancoBotao();
+    return;
+  }
+
+  botaoEnviar.classList.add('is-glitching');
+  setTimeout(function () {
+    botaoEnviar.classList.remove('is-glitching');
+  }, 420);
 });
 
 // ---------- ESTADO INICIAL DA PÁGINA ----------
