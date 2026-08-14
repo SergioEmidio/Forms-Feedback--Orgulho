@@ -15,23 +15,20 @@ Sistema web moderno, responsivo e altamente estilizado desenvolvido para a colet
 
 ## 📸 Demonstração Visual do Sistema
 
-<div align="center">
 
-<div align="center">
 
-  <p><b>1. Formulário de Avaliação (Estado Inicial Limpo)</b></p>
-  <img src="docs/assets/formulario.png" alt="Formulário Inicial RefMap" width="85%">
-  
-  <p><b>2. Validação Reativa em Tempo Real e Feedback Visual por Campo</b></p>
-  <img src="docs/assets/formulario-1.png" alt="Formulário Validado RefMap" width="85%">
+**1. Formulário de Avaliação (Estado Inicial Limpo)**
+![Formulário Inicial RefMap](docs/assets/formulario.png)
 
-  <p><b>3. Tela de Login do Dashboard (Segurança de Acesso Restrito)</b></p>
-  <img src="docs/assets/login_dashboard.png" alt="Tela de Login RefMap" width="85%">
+**2. Validação Reativa em Tempo Real e Feedback Visual por Campo**
+![Formulário Validado RefMap](docs/assets/formulario-1.png)
 
-  <p><b>4. Resiliência de Rede: Tratamento Inteligente de Conexão (Servidor Offline)</b></p>
-  <img src="docs/assets/forms_servidorOffline.png" alt="Alerta de Conexão Servidor Offline" width="85%">
+**3. Tela de Login do Dashboard (Segurança de Acesso Restrito)**
+![Tela de Login RefMap](docs/assets/login_dashboard.png)
 
-</div>
+**4. Resiliência de Rede: Tratamento Inteligente de Conexão (Servidor Offline)**
+![Alerta de Conexão Servidor Offline](docs/assets/forms_servidorOffline.png)
+
 
 ---
 
