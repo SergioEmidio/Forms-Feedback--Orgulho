@@ -15,7 +15,7 @@ Sistema web moderno, responsivo e altamente estilizado desenvolvido para a colet
 
 ## 📸 Demonstração Visual do Sistema
 
-## 📸 Demonstrção Visual do Sistema
+
 
 <div align="center">
 
