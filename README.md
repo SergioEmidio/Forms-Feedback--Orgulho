@@ -38,6 +38,7 @@ Sistema web moderno, responsivo e altamente estilizado desenvolvido para a colet
   <img src="docs/assets/forms_servidorOffline.png" alt="Alerta de Conexão Servidor Offline" style="max-width: 85%; height: auto;">
 
 </div>
+
 ---
 
 ## 🛑 O Problema: Formulários Comuns vs. A Abordagem do RefMap
