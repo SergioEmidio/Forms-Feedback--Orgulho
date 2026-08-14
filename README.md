@@ -15,22 +15,24 @@ Sistema web moderno, responsivo e altamente estilizado desenvolvido para a colet
 
 ## 📸 Demonstração Visual do Sistema
 
+## 📸 Demonstrção Visual do Sistema
+
 <div align="center">
 
   <p><b>1. Formulário de Avaliação (Estado Inicial Limpo)</b></p>
-  <img src="docs/assets/formulario.png" alt="Formulário Inicial RefMap" style="max-width: 85%; height: auto;">
+  <img src="docs/assets/formulario.png" alt="Formulário Inicial RefMap" style="max-width: 85%; height: auto; margin-bottom: 30px;">
   
-  <br><br>
+  <br><br><br>
 
   <p><b>2. Validação Reativa em Tempo Real e Feedback Visual por Campo</b></p>
-  <img src="docs/assets/formulario-1.png" alt="Formulário Validado RefMap" style="max-width: 85%; height: auto;">
+  <img src="docs/assets/formulario-1.png" alt="Formulário Validado RefMap" style="max-width: 85%; height: auto; margin-bottom: 30px;">
 
-  <br><br>
+  <br><br><br>
 
   <p><b>3. Tela de Login do Dashboard (Segurança de Acesso Restrito)</b></p>
-  <img src="docs/assets/login_dashboard.png" alt="Tela de Login RefMap" style="max-width: 85%; height: auto;">
+  <img src="docs/assets/login_dashboard.png" alt="Tela de Login RefMap" style="max-width: 85%; height: auto; margin-bottom: 30px;">
 
-  <br><br>
+  <br><br><br>
 
   <p><b>4. Resiliência de Rede: Tratamento Inteligente de Conexão (Servidor Offline)</b></p>
   <img src="docs/assets/forms_servidorOffline.png" alt="Alerta de Conexão Servidor Offline" style="max-width: 85%; height: auto;">
