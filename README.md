@@ -15,21 +15,25 @@ Sistema web moderno, responsivo e altamente estilizado desenvolvido para a colet
 
 ## 📸 Demonstração Visual do Sistema
 
+<p align="center"><b>1. Formulário de Avaliação (Estado Inicial Limpo)</b></p>
+<p align="center">
+  <img src="docs/assets/formulario.png" alt="Formulário Inicial RefMap">
+</p>
 
+<p align="center"><b>2. Validação Reativa em Tempo Real e Feedback Visual por Campo</b></p>
+<p align="center">
+  <img src="docs/assets/formulario-1.png" alt="Formulário Validado RefMap">
+</p>
 
-**1. Formulário de Avaliação (Estado Inicial Limpo)**
-![Formulário Inicial RefMap](docs/assets/formulário.png)
+<p align="center"><b>3. Tela de Login do Dashboard (Segurança de Acesso Restrito)</b></p>
+<p align="center">
+  <img src="docs/assets/login_dashboard.png" alt="Tela de Login RefMap">
+</p>
 
-**2. Validação Reativa em Tempo Real e Feedback Visual por Campo**
-![Formulário Validado RefMap](docs/assets/formulário-1.png)
-
-**3. Tela de Login do Dashboard (Segurança de Acesso Restrito)**
-![Tela de Login RefMap](docs/assets/login_dashboard.png)
-
-**4. Resiliência de Rede: Tratamento Inteligente de Conexão (Servidor Offline)**
-![Alerta de Conexão Servidor Offline](docs/assets/forms_servidorOffline.png)
-
-
+<p align="center"><b>4. Resiliência de Rede: Tratamento Inteligente de Conexão (Servidor Offline)</b></p>
+<p align="center">
+  <img src="docs/assets/forms_servidorOffline.png" alt="Alerta de Conexão Servidor Offline">
+</p>
 ---
 
 ## 🛑 O Problema: Formulários Comuns vs. A Abordagem do RefMap
