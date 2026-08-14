@@ -11,3 +11,4 @@ from sqlalchemy.orm import relationship
 
 from .database import Base
 # Importa a Base criada em database.py — toda tabela precisa herdar dela
+

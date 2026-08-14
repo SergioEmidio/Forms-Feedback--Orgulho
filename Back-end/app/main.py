@@ -10,3 +10,20 @@ from .routers import respostas, salas, resumo, qrcode
 
 from .database import engine, Base
 # engine conecta ao banco; Base.metadata.create_all(engine) cria as tabelas se não existirem
+
+
+##Esse import é da senha do nosso site, não apagar.
+from .login import router as login_router
+
+# 2. Criação da aplicação
+app = FastAPI(
+    title="API do Projeto de Feedback",
+    description="API para coletar respostas de feedback, gerar QR Codes e fornecer resumo estatístico.",
+    version="1.0.0",
+)
+# 3. Inclusão das rotas
+app.include_router(login_router)
+
+@app.get("/")
+def raiz():
+    return {"mensagem": "API do RefMap rodando!"}

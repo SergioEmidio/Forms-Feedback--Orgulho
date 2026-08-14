@@ -47,7 +47,10 @@ async function requisitar(url, opcoes) {
   }
 
   if (!response.ok) {
-    throw new Error(await montarMensagemDeErro(response));
+    const mensagem = await montarMensagemDeErro(response);
+    const erro = new Error(mensagem);
+    erro.status = response.status;
+    throw erro;
   }
 
   return response;

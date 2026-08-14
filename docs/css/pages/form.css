@@ -43,18 +43,25 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
-/* ===== CADA CAMPO ===== */
+/* ===== CADA CAMPO =====
+   Some por padrão; só anima quando o overlay de carregamento já sumiu
+   (classe adicionada pelo carregando.js) — mesma lógica do login.css. */
 .campo {
   margin-bottom: var(--space-6);
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+body.conteudo-pronto .campo {
   animation: campo-entrada 420ms var(--ease-standard) both;
 }
 
-.campo:nth-child(1) { animation-delay: 0ms; }
-.campo:nth-child(2) { animation-delay: 70ms; }
-.campo:nth-child(3) { animation-delay: 140ms; }
-.campo:nth-child(4) { animation-delay: 210ms; }
-.campo:nth-child(5) { animation-delay: 280ms; }
-.campo:nth-child(6) { animation-delay: 350ms; }
+body.conteudo-pronto .campo:nth-child(1) { animation-delay: 0ms; }
+body.conteudo-pronto .campo:nth-child(2) { animation-delay: 70ms; }
+body.conteudo-pronto .campo:nth-child(3) { animation-delay: 140ms; }
+body.conteudo-pronto .campo:nth-child(4) { animation-delay: 210ms; }
+body.conteudo-pronto .campo:nth-child(5) { animation-delay: 280ms; }
+body.conteudo-pronto .campo:nth-child(6) { animation-delay: 350ms; }
 
 @keyframes campo-entrada {
   from {
@@ -69,6 +76,26 @@ body {
 
 .campo:last-child {
   margin-bottom: 0;
+}
+
+/* ===== LINK ANÔNIMO (a palavra "Avaliação" que leva ao login) =====
+   Precisa parecer texto normal — sem cor diferente, sem sublinhado —
+   só um leve feedback no hover, pra não denunciar visualmente que é clicável. */
+.link-anonimo {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.link-anonimo:hover,
+.link-anonimo:focus-visible {
+  opacity: 0.7;
+}
+
+.link-anonimo:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .obrigatorio {

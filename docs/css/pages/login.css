@@ -1,0 +1,136 @@
+/* ============================================================
+   LOGIN PAGE — layout específico da tela de login.
+   Reaproveita os tokens de variables.css e os componentes
+   de button.css/popup.css já existentes no projeto.
+   ============================================================ */
+
+/* Background no body (não no #tela-login): cobre 100% da tela sempre,
+   sem depender da altura calculada de um elemento filho — é isso que
+   causava aquele "recorte"/emenda visível no fundo. */
+body {
+  background:
+    radial-gradient(120% 90% at 15% -10%, rgba(0, 255, 249, 0.10) 0%, transparent 60%),
+    radial-gradient(110% 90% at 100% 110%, rgba(255, 0, 64, 0.08) 0%, transparent 65%),
+    var(--color-bg);
+  background-attachment: fixed;
+}
+
+#tela-login {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+}
+
+/* ===== CARD =====
+   Some por padrão; só anima quando o overlay de carregamento já sumiu
+   (classe adicionada pelo carregando.js) — sem isso, a animação de
+   entrada rodaria escondida atrás do overlay e nunca seria vista. */
+.login-card {
+  width: min(420px, 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0)), var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: clamp(28px, 6vw, 40px) clamp(22px, 5vw, 32px);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+}
+
+body.conteudo-pronto .login-card {
+  animation: login-card-entrada 480ms var(--ease-emphasized) both;
+}
+
+@keyframes login-card-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-card h1 {
+  margin-bottom: var(--space-2);
+}
+
+.login-card__subtitulo {
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-6);
+}
+
+/* ===== CAMPOS DO FORMULÁRIO DE LOGIN ===== */
+#formulario-login .campo {
+  text-align: left;
+}
+
+/* ===== CAMPO DE SENHA COM BOTÃO MOSTRAR/ESCONDER ===== */
+.campo-senha {
+  position: relative;
+}
+
+.campo-senha input {
+  padding-right: 44px;
+}
+
+.botao-mostrar-senha {
+  position: absolute;
+  right: var(--space-2);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: var(--text-base);
+  line-height: 1;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.botao-mostrar-senha:hover {
+  color: var(--color-text-primary);
+}
+
+.botao-mostrar-senha:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ===== BOTÃO ENTRAR: centralizado e ocupando a largura do card ===== */
+#div-entrar {
+  margin-top: var(--space-8);
+}
+
+#div-entrar .cb-08 {
+  min-height: 0;
+  padding: 0;
+  background: none;
+  display: flex;
+  justify-content: center;
+}
+
+#div-entrar .cb-08__btn {
+  width: 100%;
+}
+
+/* ===== LINK "VOLTAR AO FORMULÁRIO" ===== */
+.login-card__voltar {
+  display: inline-block;
+  margin-top: var(--space-6);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.login-card__voltar:hover {
+  color: var(--color-primary);
+}

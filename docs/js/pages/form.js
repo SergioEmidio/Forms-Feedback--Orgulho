@@ -13,6 +13,7 @@ import {
   validarFormulario,
 } from '../utils/validacao.js';
 import { abrirPopup, popupSucesso, popupErro } from '../components/popup.js';
+import { mostrarCarregamento, esconderCarregamento, navegarComCarregamento } from '../components/carregando.js';
 import { LIMITE_CARACTERES_OPINIAO } from '../config.js';
 
 const formulario = document.getElementById('formulario-avaliacao');
@@ -20,6 +21,16 @@ const botaoEnviar = formulario.querySelector('.cb-08__btn');
 const fillBotaoEnviar = botaoEnviar.querySelector('.cb-08__fill');
 const campoOpiniao = document.getElementById('opiniao');
 const contadorOpiniao = document.getElementById('contador-opiniao');
+
+// ---------- ENTRADA ANÔNIMA (a palavra "Avaliação" leva ao login, com transição suave) ----------
+const linkEntradaAnonima = document.getElementById('link-entrada-anonima');
+
+if (linkEntradaAnonima) {
+  linkEntradaAnonima.addEventListener('click', function (event) {
+    event.preventDefault();
+    navegarComCarregamento(linkEntradaAnonima.href);
+  });
+}
 
 // ---------- ESTRELAS DA NOTA ----------
 const containerEstrelas = document.getElementById('avaliacao-estrelas');
@@ -306,7 +317,11 @@ formulario.addEventListener('submit', async function (event) {
   if (!validacao.valido) {
     focarPrimeiroErro(validacao);
     popupErro(function () {
-      resetarFormularioCompleto();
+      mostrarCarregamento();
+      setTimeout(function () {
+        resetarFormularioCompleto();
+        esconderCarregamento();
+      }, 600);
     });
     return;
   }
@@ -319,7 +334,11 @@ formulario.addEventListener('submit', async function (event) {
     await enviarResposta(respostas);
 
     popupSucesso(function () {
-      resetarFormularioCompleto();
+      mostrarCarregamento();
+      setTimeout(function () {
+        resetarFormularioCompleto();
+        esconderCarregamento();
+      }, 600);
     });
   } catch (erro) {
     console.error(erro);

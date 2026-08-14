@@ -8,21 +8,25 @@
 </head>
 <body>
 
-  <!-- ===== NAVEGAÇÃO ENTRE AS PÁGINAS ===== -->
-  <nav class="navbar-projeto" aria-label="Navegação principal">
-    <span class="navbar-projeto__marca">Nome do Projeto</span>
-    <div class="navbar-projeto__links">
-      <a href="index.html" class="navbar-projeto__link navbar-projeto__link--ativo" aria-current="page">Formulário</a>
-      <a href="dashboard.html" class="navbar-projeto__link">Dashboard</a>
-    </div>
-  </nav>
+  <!-- Overlay de carregamento — precisa ser o primeiro elemento do body,
+       assim ele é a primeira coisa pintada na tela, sem "flash" do conteúdo por trás. -->
+  <div id="tela-carregando" class="tela-carregando" aria-hidden="false">
+    <div class="tela-carregando__anel"></div>
+    <p class="tela-carregando__texto">
+      Carregando<span class="ponto">.</span><span class="ponto">.</span><span class="ponto">.</span>
+    </p>
+  </div>
+  <noscript><style>#tela-carregando { display: none; }</style></noscript>
 
   <!-- ===== DIV SUPERIOR: NOME/LOGO DO PROJETO ===== -->
   <div id="cabecalho-projeto">
     <!-- Se tiver uma logo, troque o src abaixo. Caso não tenha, pode remover a tag <img>. -->
     <img src="logo-projeto.png" alt="Logo do projeto">
     <h1>Nome do Projeto</h1>
-    <p>Avaliação da apresentação — sua opinião nos ajuda a melhorar</p>
+    <p>
+      <a href="login.html" id="link-entrada-anonima" class="link-anonimo">Avaliação</a>
+      da apresentação — sua opinião nos ajuda a melhorar
+    </p>
   </div>
 
   <!-- ===== CONTAINER DO FORMULÁRIO ===== -->

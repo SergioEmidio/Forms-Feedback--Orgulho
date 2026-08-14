@@ -17,6 +17,7 @@
 @import url("components/popup.css");
 @import url("components/status-campo.css");
 @import url("components/navbar.css");
+@import url("components/carregando.css");
 
 /* 4. Página específica (por último, pra poder sobrescrever componentes se preciso) */
 @import url("pages/form.css");

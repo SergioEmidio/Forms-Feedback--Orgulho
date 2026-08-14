@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Área Restrita</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/pages/login.css">
+</head>
+<body>
+
+  <!-- Overlay de carregamento — primeiro elemento do body, sem flash do conteúdo por trás. -->
+  <div id="tela-carregando" class="tela-carregando" aria-hidden="false">
+    <div class="tela-carregando__anel"></div>
+    <p class="tela-carregando__texto">
+      Carregando<span class="ponto">.</span><span class="ponto">.</span><span class="ponto">.</span>
+    </p>
+  </div>
+  <noscript><style>#tela-carregando { display: none; }</style></noscript>
+
+  <div id="tela-login">
+    <div class="login-card">
+      <p class="texto-eyebrow">Área restrita</p>
+      <h1>Acesso ao Dashboard</h1>
+      <p class="login-card__subtitulo">Entre com suas credenciais para visualizar os resultados da avaliação.</p>
+
+      <form id="formulario-login" novalidate>
+
+        <!-- USUÁRIO -->
+        <div class="campo" id="div-usuario">
+          <label for="usuario">Usuário</label>
+          <input type="text" id="usuario" name="usuario" autocomplete="username" placeholder="Digite seu usuário" required>
+        </div>
+
+        <!-- SENHA -->
+        <div class="campo" id="div-senha">
+          <label for="senha">Senha</label>
+          <div class="campo-senha">
+            <input type="password" id="senha" name="senha" autocomplete="current-password" placeholder="Digite sua senha" required>
+            <button type="button" id="botao-mostrar-senha" class="botao-mostrar-senha" aria-label="Mostrar senha">
+              👁
+            </button>
+          </div>
+        </div>
+
+        <!-- BOTÃO ENTRAR -->
+        <div class="campo" id="div-entrar">
+          <div class="cb-08">
+            <button type="submit" class="cb-08__btn" data-text="ENTRAR">
+              <span class="cb-08__fill"></span>
+              <span class="cb-08__label">ENTRAR</span>
+              <span class="cb-08__spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      <a href="index.html" class="login-card__voltar">← Voltar ao formulário</a>
+    </div>
+  </div>
+
+  <!-- ===== POP-UP DE RESULTADO DO LOGIN ===== -->
+  <div id="popup-overlay" class="popup-overlay" hidden>
+    <div class="popup-caixa" role="alertdialog" aria-labelledby="popup-titulo" aria-describedby="popup-texto">
+      <p id="popup-icone" class="popup-icone"></p>
+      <h2 id="popup-titulo"></h2>
+      <p id="popup-texto"></p>
+      <button id="popup-botao" class="popup-botao" type="button"></button>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/login.js"></script>
+</body>
+</html>

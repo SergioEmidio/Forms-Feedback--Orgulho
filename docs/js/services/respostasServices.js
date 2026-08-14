@@ -4,7 +4,7 @@
 // e qual formato de dado é específico das respostas do formulário.
 
 import { apiGet, apiPost } from './api.js';
-import { API_URL } from '../config.js';
+import { RESPOSTAS_URL } from '../config.js';
 
 /**
  * Envia as respostas do formulário de avaliação para o backend.
@@ -14,7 +14,7 @@ import { API_URL } from '../config.js';
  * @throws {Error} se a requisição falhar (rede ou resposta com status de erro)
  */
 export async function enviarResposta(respostas) {
-  return apiPost(API_URL, respostas);
+  return apiPost(RESPOSTAS_URL, respostas);
 }
 
 /**
@@ -23,5 +23,5 @@ export async function enviarResposta(respostas) {
  * @returns {Promise<Array<Object>>}
  */
 export async function buscarRespostas() {
-  return apiGet(API_URL);
+  return apiGet(RESPOSTAS_URL);
 }

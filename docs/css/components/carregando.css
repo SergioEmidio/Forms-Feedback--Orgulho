@@ -1,0 +1,91 @@
+/* ============================================================
+   TELA DE CARREGAMENTO — overlay reutilizável em qualquer página.
+   Fica visível por padrão (é a primeira coisa pintada, sem flash
+   do conteúdo por trás) e o JS decide quando esconder.
+   ============================================================ */
+
+.tela-carregando {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  background: var(--color-bg);
+  transition: opacity 420ms var(--ease-standard), visibility 420ms var(--ease-standard);
+}
+
+.tela-carregando--escondida {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ===== ANEL DUPLO GIRANDO ===== */
+.tela-carregando__anel {
+  position: relative;
+  width: 56px;
+  height: 56px;
+}
+
+.tela-carregando__anel::before,
+.tela-carregando__anel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  border: 3px solid transparent;
+}
+
+.tela-carregando__anel::before {
+  border-top-color: var(--color-primary);
+  border-right-color: var(--color-primary);
+  animation: carregando-girar 900ms linear infinite;
+}
+
+.tela-carregando__anel::after {
+  inset: 11px;
+  border-bottom-color: var(--color-danger);
+  border-left-color: var(--color-danger);
+  opacity: 0.6;
+  animation: carregando-girar 700ms linear infinite reverse;
+}
+
+@keyframes carregando-girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== TEXTO COM PONTINHOS PULSANDO ===== */
+.tela-carregando__texto {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+}
+
+.tela-carregando__texto .ponto {
+  display: inline-block;
+  opacity: 0;
+  animation: pontinho-pulsar 1200ms ease-in-out infinite;
+}
+
+.tela-carregando__texto .ponto:nth-child(2) {
+  animation-delay: 200ms;
+}
+
+.tela-carregando__texto .ponto:nth-child(3) {
+  animation-delay: 400ms;
+}
+
+@keyframes pontinho-pulsar {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}

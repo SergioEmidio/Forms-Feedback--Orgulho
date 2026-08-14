@@ -11,5 +11,3 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 # Cria a classe Base, que todo modelo de tabela (em models.py) vai herdar
 
-from sqlalchemy.orm import sessionmaker
-# Cria "sessões" de conversa com o banco (cada requisição abre uma sessão pra consultar/salvar)
