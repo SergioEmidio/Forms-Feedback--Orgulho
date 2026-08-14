@@ -18,7 +18,7 @@ Sistema web moderno, responsivo e altamente estilizado desenvolvido para a colet
 <div align="center">
 
   <p><b>1. Formulário de Avaliação (Estado Inicial Limpo)</b></p>
-  <img src="/docs/assets/formulario.png" alt="Formulário Inicial RefMap" width="85%">
+  <img src="docs/assets/formulario.png" alt="Formulário Inicial RefMap" width="85%">
   
   <p><b>2. Validação Reativa em Tempo Real e Feedback Visual por Campo</b></p>
   <img src="/docs/assets/formulário-1.png" alt="Formulário Validado RefMap" width="85%">
