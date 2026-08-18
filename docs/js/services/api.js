@@ -7,12 +7,13 @@
 
 /**
  * Faz uma requisição GET e devolve o corpo já convertido de JSON.
- * @param {string} url - endpoint completo (ex: API_URL do config.js)
+ * @param {string} url - endpoint completo (ex: RESPOSTAS_URL do config.js)
+ * @param {Object} [headers] - headers extras (ex: Authorization pro dashboard)
  * @returns {Promise<any>}
  * @throws {Error} com mensagem legível em caso de falha de rede ou resposta de erro
  */
-export async function apiGet(url) {
-  const response = await requisitar(url, { method: 'GET' });
+export async function apiGet(url, headers = {}) {
+  const response = await requisitar(url, { method: 'GET', headers });
   return lerCorpoJson(response);
 }
 
@@ -20,17 +21,27 @@ export async function apiGet(url) {
  * Faz uma requisição POST enviando "dados" como JSON e devolve o corpo da resposta.
  * @param {string} url - endpoint completo
  * @param {Object} dados - objeto que será convertido em JSON e enviado no corpo
+ * @param {Object} [headers] - headers extras (ex: Authorization)
  * @returns {Promise<any>}
  * @throws {Error} com mensagem legível em caso de falha de rede ou resposta de erro
  */
-export async function apiPost(url, dados) {
+export async function apiPost(url, dados, headers = {}) {
   const response = await requisitar(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json', ...headers },
     body: JSON.stringify(dados),
   });
+  return lerCorpoJson(response);
+}
+
+/**
+ * Faz uma requisição DELETE. Usada pelo dashboard pra excluir uma resposta.
+ * @param {string} url - endpoint completo (ex: RESPOSTAS_URL + '/123')
+ * @param {Object} [headers] - headers extras (ex: Authorization)
+ * @returns {Promise<any>}
+ */
+export async function apiDelete(url, headers = {}) {
+  const response = await requisitar(url, { method: 'DELETE', headers });
   return lerCorpoJson(response);
 }
 

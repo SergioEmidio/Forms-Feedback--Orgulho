@@ -1,2 +1,285 @@
-Página do DASHBOARD (gráficos)
-│
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Resultados da Avaliação</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/pages/dashboard.css">
+</head>
+<body>
+
+  <div id="tela-carregando" class="tela-carregando" aria-hidden="false">
+    <div class="tela-carregando__anel"></div>
+    <p class="tela-carregando__texto">
+      Carregando<span class="ponto">.</span><span class="ponto">.</span><span class="ponto">.</span>
+    </p>
+  </div>
+  <noscript><style>#tela-carregando { display: none; }</style></noscript>
+
+  <script>
+    setTimeout(function () {
+      var overlay = document.getElementById('tela-carregando');
+      if (overlay && !overlay.classList.contains('tela-carregando--escondida')) {
+        overlay.classList.add('tela-carregando--escondida');
+        document.body.classList.add('conteudo-pronto');
+        console.warn('[rede de segurança] A tela de carregamento foi forçada a esconder após 4s. Confira o Console para o erro real.');
+      }
+    }, 4000);
+  </script>
+
+  <!-- ===== NAVBAR / BARRA DE FERRAMENTAS ===== -->
+  <nav class="navbar-projeto" id="navbar-projeto" aria-label="Navegação e ferramentas do dashboard">
+    <span class="navbar-projeto__marca">Nome do Projeto</span>
+
+    <div class="navbar-projeto__ferramentas">
+      <div class="filtro-periodo" role="group" aria-label="Filtrar por período de envio">
+        <button type="button" class="filtro-periodo__botao filtro-periodo__botao--ativo" data-periodo="todos">Tudo</button>
+        <button type="button" class="filtro-periodo__botao" data-periodo="hoje">Hoje</button>
+        <button type="button" class="filtro-periodo__botao" data-periodo="7">7d</button>
+        <button type="button" class="filtro-periodo__botao" data-periodo="30">30d</button>
+      </div>
+
+      <button type="button" id="botao-limpar-filtros" class="botao-limpar-filtros">Limpar filtros</button>
+
+      <div class="menu-colunas" id="menu-filtros-salvos">
+        <button type="button" id="botao-filtros-salvos" class="botao-icone" aria-label="Filtros salvos" title="Filtros salvos" aria-haspopup="true" aria-expanded="false">
+          <span>⭐</span>
+        </button>
+        <div id="dropdown-filtros-salvos" class="menu-colunas__dropdown" hidden>
+          <div class="menu-colunas__cabecalho">
+            <span>Filtros salvos</span>
+            <button type="button" id="botao-fechar-filtros-salvos" class="botao-fechar-dropdown" aria-label="Fechar">✕</button>
+          </div>
+          <button type="button" id="botao-salvar-filtro-atual" class="botao-texto" style="text-align:left;">+ Salvar filtro atual</button>
+          <div id="lista-filtros-salvos"></div>
+        </div>
+      </div>
+
+      <button type="button" id="botao-copiar-link" class="botao-icone" aria-label="Copiar link com filtros aplicados" title="Copiar link com filtros">
+        <span>🔗</span>
+      </button>
+
+      <span id="contador-filtrados" class="contador-filtrados"></span>
+
+      <button type="button" id="botao-tema" class="botao-icone" aria-label="Alternar tema claro/escuro" title="Alternar tema">
+        <span id="icone-tema">🌙</span>
+      </button>
+
+      <button type="button" id="botao-densidade" class="botao-icone" aria-label="Alternar densidade da tabela" title="Densidade da tabela">
+        <span class="icone-densidade">☰</span>
+      </button>
+
+      <button type="button" id="botao-apresentacao" class="botao-icone" aria-label="Modo apresentação" title="Modo apresentação">
+        <span class="icone-apresentacao">⛶</span>
+      </button>
+
+      <div class="ultima-atualizacao" title="Quando os dados foram buscados pela última vez">
+        <span class="ultima-atualizacao__ponto" id="ponto-atualizacao"></span>
+        <span id="texto-ultima-atualizacao">—</span>
+      </div>
+
+      <button type="button" id="botao-atualizar" class="botao-icone" aria-label="Atualizar dados" title="Atualizar dados">
+        <span id="icone-atualizar" class="icone-atualizar">⟳</span>
+      </button>
+
+      <label class="alternador-percentual" for="toggle-percentual" title="Mostrar valores em porcentagem">
+        <input type="checkbox" id="toggle-percentual">
+        <span class="alternador-percentual__trilho"><span class="alternador-percentual__bola"></span></span>
+        <span class="alternador-percentual__texto">%</span>
+      </label>
+    </div>
+
+    <div class="navbar-projeto__links">
+      <a href="index.html" class="navbar-projeto__link">Formulário</a>
+      <a href="dashboard.html" class="navbar-projeto__link navbar-projeto__link--ativo" aria-current="page">Dashboard</a>
+
+      <div class="menu-usuario">
+        <button type="button" id="botao-usuario" class="navbar-projeto__link" aria-haspopup="true" aria-expanded="false">
+          Admin ▾
+        </button>
+        <div id="menu-usuario-dropdown" class="menu-usuario__dropdown" hidden>
+          <button type="button" id="botao-sair" class="menu-usuario__item menu-usuario__item--perigo">Sair</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Botão flutuante só visível no modo apresentação (a navbar some nesse modo) -->
+  <button type="button" id="botao-sair-apresentacao" class="botao-sair-apresentacao" hidden>✕ Sair da apresentação</button>
+
+  <!-- Tooltip compartilhado por todos os gráficos -->
+  <div id="tooltip-grafico" class="tooltip-grafico" hidden></div>
+
+  <main id="conteudo-dashboard">
+
+    <!-- ===== KPIs ===== -->
+    <section class="kpis" aria-label="Indicadores gerais">
+      <div class="kpi-card">
+        <p class="kpi-card__rotulo">Total de respostas</p>
+        <p class="kpi-card__valor skeleton-linha" id="kpi-total">—</p>
+        <div id="sparkline-total" class="kpi-card__sparkline"></div>
+      </div>
+      <div class="kpi-card">
+        <p class="kpi-card__rotulo">Nota média</p>
+        <p class="kpi-card__valor skeleton-linha" id="kpi-nota-media">—</p>
+        <div id="sparkline-nota" class="kpi-card__sparkline"></div>
+      </div>
+      <div class="kpi-card">
+        <p class="kpi-card__rotulo">Participante mais comum</p>
+        <p class="kpi-card__valor kpi-card__valor--texto skeleton-linha" id="kpi-tipo-comum">—</p>
+      </div>
+    </section>
+
+    <!-- ===== RESUMO EXECUTIVO (gerado automaticamente) ===== -->
+    <section class="resumo-executivo" id="resumo-executivo" aria-label="Resumo automático">
+      <span class="resumo-executivo__icone">📊</span>
+      <p id="texto-resumo-executivo" class="skeleton-linha skeleton-linha--bloco"></p>
+    </section>
+
+    <!-- ===== GRÁFICOS ===== -->
+    <section class="graficos" aria-label="Gráficos">
+      <div class="grafico-card">
+        <div class="grafico-card__cabecalho">
+          <h2>Distribuição de notas</h2>
+          <div class="grafico-card__alternador" role="group" aria-label="Tipo de gráfico de notas">
+            <span class="pilula-deslizante" aria-hidden="true"></span>
+            <button type="button" class="botao-tipo-grafico botao-tipo-grafico--ativo" data-grafico="notas" data-tipo="barras">Barras</button>
+            <button type="button" class="botao-tipo-grafico" data-grafico="notas" data-tipo="linha">Linha</button>
+          </div>
+        </div>
+        <div id="grafico-notas" class="grafico-card__area"></div>
+      </div>
+
+      <div class="grafico-card">
+        <div class="grafico-card__cabecalho">
+          <h2>Tipo de participante</h2>
+          <div class="grafico-card__alternador" role="group" aria-label="Tipo de gráfico de participantes">
+            <span class="pilula-deslizante" aria-hidden="true"></span>
+            <button type="button" class="botao-tipo-grafico botao-tipo-grafico--ativo" data-grafico="tipos" data-tipo="rosca">Rosca</button>
+            <button type="button" class="botao-tipo-grafico" data-grafico="tipos" data-tipo="barras">Barras</button>
+          </div>
+        </div>
+        <div class="grafico-card__linha">
+          <div id="grafico-tipos" class="grafico-card__area grafico-card__area--donut"></div>
+          <ul id="legenda-tipos" class="legenda-tipos"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== COMPARAÇÃO DE NOTA MÉDIA POR TIPO + NUVEM DE PALAVRAS ===== -->
+    <section class="graficos" aria-label="Comparações adicionais">
+      <div class="grafico-card">
+        <div class="grafico-card__cabecalho">
+          <h2>Nota média por tipo de participante</h2>
+        </div>
+        <div id="grafico-comparacao-tipo" class="grafico-card__area"></div>
+      </div>
+
+      <div class="grafico-card">
+        <div class="grafico-card__cabecalho">
+          <h2>Palavras mais citadas nas opiniões</h2>
+        </div>
+        <div id="nuvem-palavras" class="nuvem-palavras"></div>
+      </div>
+    </section>
+
+    <!-- ===== FILTROS ===== -->
+    <section class="filtros" id="secao-filtros" aria-label="Filtros">
+      <div class="filtro-item">
+        <label for="filtro-busca">Buscar por nome</label>
+        <input type="text" id="filtro-busca" placeholder="Digite um nome...">
+      </div>
+      <div class="filtro-item">
+        <label for="filtro-tipo">Tipo</label>
+        <select id="filtro-tipo">
+          <option value="">Todos</option>
+          <option value="Aluno">Aluno</option>
+          <option value="Ex-aluno">Ex-aluno</option>
+          <option value="Responsável">Responsável</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+      <div class="filtro-item">
+        <label for="filtro-nota-min">Nota mínima</label>
+        <select id="filtro-nota-min">
+          <option value="">Qualquer</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <button type="button" id="botao-exportar-csv" class="botao-secundario">Exportar CSV</button>
+    </section>
+
+    <div id="barra-selecao" class="barra-selecao" hidden>
+      <span id="texto-selecao">0 selecionadas</span>
+      <button type="button" id="botao-excluir-selecionados" class="botao-perigo">Excluir selecionados</button>
+      <button type="button" id="botao-limpar-selecao" class="botao-texto">Limpar seleção</button>
+    </div>
+
+    <!-- ===== TABELA ===== -->
+    <section class="tabela-wrapper" id="secao-tabela" aria-label="Lista de respostas">
+      <table id="tabela-respostas">
+        <thead>
+          <tr>
+            <th class="th-checkbox"><input type="checkbox" id="checkbox-selecionar-todos" class="checkbox-personalizado" aria-label="Selecionar todas"></th>
+            <th data-coluna="nome-completo" class="th-ordenavel">Nome</th>
+            <th data-coluna="nascimento" class="th-ordenavel">Nascimento</th>
+            <th data-coluna="tipo-participante" class="th-ordenavel">Tipo</th>
+            <th data-coluna="nota" class="th-ordenavel">Nota</th>
+            <th data-coluna="enviado-em" class="th-ordenavel">Enviado em</th>
+            <th>Opinião</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpo-tabela">
+          <tr class="linha-skeleton"><td colspan="8"><span class="skeleton-linha skeleton-linha--bloco"></span></td></tr>
+          <tr class="linha-skeleton"><td colspan="8"><span class="skeleton-linha skeleton-linha--bloco"></span></td></tr>
+          <tr class="linha-skeleton"><td colspan="8"><span class="skeleton-linha skeleton-linha--bloco"></span></td></tr>
+          <tr class="linha-skeleton"><td colspan="8"><span class="skeleton-linha skeleton-linha--bloco"></span></td></tr>
+        </tbody>
+      </table>
+      <div id="estado-vazio" class="estado-vazio" hidden>
+        <svg class="estado-vazio__icone" viewBox="0 0 64 64" width="64" height="64" fill="none" aria-hidden="true">
+          <circle cx="32" cy="32" r="28" stroke="var(--color-border)" stroke-width="2" />
+          <path d="M22 26h20M22 38h12" stroke="var(--color-border)" stroke-width="2" stroke-linecap="round" />
+          <circle cx="44" cy="44" r="10" fill="var(--color-surface)" stroke="var(--color-text-muted)" stroke-width="2" />
+          <path d="M40 44h8M44 40v8" stroke="var(--color-text-muted)" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <p id="estado-vazio-titulo" class="estado-vazio__titulo">Nenhuma resposta encontrada</p>
+        <p id="estado-vazio-texto" class="estado-vazio__texto">Tente ajustar os filtros aplicados.</p>
+        <button type="button" id="botao-limpar-filtros-vazio" class="botao-secundario">Limpar filtros</button>
+      </div>
+
+      <div class="paginacao" id="paginacao" hidden>
+        <button type="button" id="botao-pagina-anterior" class="botao-secundario">← Anterior</button>
+        <span id="texto-pagina">Página 1 de 1</span>
+        <button type="button" id="botao-pagina-proxima" class="botao-secundario">Próxima →</button>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="painel-detalhe-overlay" class="painel-detalhe-overlay" hidden>
+    <aside id="painel-detalhe" class="painel-detalhe" aria-label="Detalhe da resposta">
+      <button type="button" id="botao-fechar-detalhe" class="botao-fechar-painel" aria-label="Fechar">✕</button>
+      <div id="painel-detalhe-conteudo"></div>
+    </aside>
+  </div>
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <div id="popup-overlay" class="popup-overlay" hidden>
+    <div class="popup-caixa" role="alertdialog" aria-labelledby="popup-titulo" aria-describedby="popup-texto">
+      <p id="popup-icone" class="popup-icone"></p>
+      <h2 id="popup-titulo"></h2>
+      <p id="popup-texto"></p>
+      <button id="popup-botao" class="popup-botao" type="button"></button>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/dashboard.js"></script>
+</body>
+</html>

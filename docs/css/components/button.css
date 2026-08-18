@@ -70,9 +70,9 @@
 .cb-08__btn {
   position: relative;
   padding: clamp(12px, 3vw, 14px) clamp(18px, 6vw, 36px);
-  border: 2px solid #fff;
+  border: 2px solid var(--color-text-primary);
   background: transparent;
-  color: #fff;
+  color: var(--color-text-primary);
   font-family: "Arial Narrow", Arial, sans-serif;
   font-size: clamp(14px, 4vw, 18px);
   font-weight: 700;
@@ -108,7 +108,7 @@
    sem precisar do mouse em cima — assim a pessoa reconhece que já pode enviar. */
 .cb-08__btn.cb-08__btn--pronto {
   color: var(--color-bg);
-  border-color: #fff;
+  border-color: var(--color-text-primary);
 }
 
 .cb-08__btn.cb-08__btn--pronto .cb-08__fill {
@@ -160,7 +160,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: #fff;
+  background: var(--color-text-primary);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform .15s cubic-bezier(.77,0,.18,1);
@@ -172,7 +172,7 @@
 }
 
 .cb-08__btn:hover {
-  color: #0c0c0f;
+  color: var(--color-bg);
 }
 
 .cb-08__btn:hover .cb-08__fill {

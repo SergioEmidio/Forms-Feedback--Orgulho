@@ -18,6 +18,17 @@
   </div>
   <noscript><style>#tela-carregando { display: none; }</style></noscript>
 
+  <script>
+    setTimeout(function () {
+      var overlay = document.getElementById('tela-carregando');
+      if (overlay && !overlay.classList.contains('tela-carregando--escondida')) {
+        overlay.classList.add('tela-carregando--escondida');
+        document.body.classList.add('conteudo-pronto');
+        console.warn('[rede de segurança] A tela de carregamento foi forçada a esconder após 4s. Isso normalmente indica um erro de import — confira o Console para o erro real.');
+      }
+    }, 4000);
+  </script>
+
   <div id="tela-login">
     <div class="login-card">
       <p class="texto-eyebrow">Área restrita</p>

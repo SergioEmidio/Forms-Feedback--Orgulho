@@ -1,15 +1,22 @@
 // services/respostasServices.js
 // Única camada do projeto que sabe "para onde" os dados de respostas vão.
-// O "como fazer a requisição" fica no api.js — aqui só decidimos qual URL
-// e qual formato de dado é específico das respostas do formulário.
+// O "como fazer a requisição" fica no api.js — aqui só decidimos qual URL,
+// qual formato de dado, e quando o token de login precisa ir junto.
 
-import { apiGet, apiPost } from './api.js';
+import { apiGet, apiPost, apiDelete } from './api.js';
 import { RESPOSTAS_URL } from '../config.js';
+import { obterToken } from './authServices.js';
+
+/** Monta o header Authorization se existir um token de login guardado. */
+function cabecalhoAutenticado() {
+  const token = obterToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 /**
  * Envia as respostas do formulário de avaliação para o backend.
+ * Não precisa de login — qualquer visitante pode enviar uma avaliação.
  * @param {Object} respostas - objeto com os dados do formulário
- *   ex: { 'nome-completo': 'Ana Silva', nascimento: '2005-03-10', 'tipo-participante': 'Aluno', nota: '9', opiniao: '...' }
  * @returns {Promise<Object>} os dados retornados pelo backend (ex: { id, criadoEm })
  * @throws {Error} se a requisição falhar (rede ou resposta com status de erro)
  */
@@ -18,10 +25,20 @@ export async function enviarResposta(respostas) {
 }
 
 /**
- * Busca todas as respostas já enviadas (uso futuro: dashboard.js vai chamar isso
- * pra listar/gráficar as avaliações recebidas).
+ * Busca todas as respostas já enviadas. Usada pelo dashboard — precisa de login,
+ * por isso manda o token no header. Se o backend rejeitar (401), o erro sobe
+ * com erro.status = 401 pro dashboard.js decidir redirecionar pro login.
  * @returns {Promise<Array<Object>>}
  */
 export async function buscarRespostas() {
-  return apiGet(RESPOSTAS_URL);
+  return apiGet(RESPOSTAS_URL, cabecalhoAutenticado());
+}
+
+/**
+ * Exclui uma resposta específica pelo id. Também exige login.
+ * @param {string|number} id
+ * @returns {Promise<Object>}
+ */
+export async function deletarResposta(id) {
+  return apiDelete(`${RESPOSTAS_URL}/${id}`, cabecalhoAutenticado());
 }

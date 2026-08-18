@@ -70,6 +70,17 @@
   border-color: rgba(248,113,113,.25);
 }
 
+/* ===== VARIAÇÃO: INFO (cyan neutro — ex: exibir a opinião completa) ===== */
+.popup-caixa--info {
+  --acento: var(--color-primary);
+  --acento-ink: var(--color-bg);
+  background:
+    radial-gradient(90% 120% at 50% -10%, rgba(0,255,249,.10) 0%, transparent 55%),
+    linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0)),
+    var(--color-surface);
+  border-color: rgba(0,255,249,.2);
+}
+
 /* ===== ÍCONE (✓ ou ✗) ===== */
 .popup-icone {
   display: inline-flex;

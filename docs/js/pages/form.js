@@ -330,6 +330,10 @@ formulario.addEventListener('submit', async function (event) {
   botaoEnviar.classList.add('cb-08__btn--bloqueado');
   botaoEnviar.setAttribute('aria-busy', 'true');
 
+  // Marca o horário exato do envio (não da abertura da página nem do preenchimento,
+  // mas do momento em que passou na validação e está de fato indo pro backend).
+  respostas['enviado-em'] = new Date().toISOString();
+
   try {
     await enviarResposta(respostas);
 

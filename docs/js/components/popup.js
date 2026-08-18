@@ -32,7 +32,7 @@ export function abrirPopup({ tipo, titulo: tituloTexto, texto: corpoTexto, texto
   // Aplica a variação visual (verde = sucesso, vermelho = erro)
   caixa.className = `popup-caixa popup-caixa--${tipo}`;
 
-  icone.textContent = tipo === 'sucesso' ? '✓' : '✗';
+  icone.textContent = tipo === 'sucesso' ? '✓' : tipo === 'erro' ? '✗' : 'i';
   titulo.textContent = tituloTexto;
   texto.textContent = corpoTexto;
   botao.textContent = textoBotao;

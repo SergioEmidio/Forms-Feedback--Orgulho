@@ -11,7 +11,8 @@ let carregouEm = Date.now();
 
 export function mostrarCarregamento() {
   if (!overlay) return;
-  carregouEm = Date.now(); // reinicia a contagem, caso seja mostrado de novo depois
+  carregouEm = Date.now();
+  document.body.classList.add('saindo'); // esmaece o conteúdo atual junto com o overlay entrando
   overlay.classList.remove('tela-carregando--escondida');
   overlay.setAttribute('aria-hidden', 'false');
 }
@@ -36,11 +37,15 @@ export function navegarComCarregamento(url) {
   }, TEMPO_MINIMO_EXIBICAO_MS);
 }
 
-// Ao carregar a página inteira (imagens, CSS, etc.), esconde o overlay —
-// respeitando um tempo mínimo de exibição, pra cobrir bem conexões lentas
-// sem parecer instantâneo/brusco demais em conexões rápidas.
-window.addEventListener('load', function () {
+// Esconde assim que o HTML + scripts terminarem de rodar — não espera imagens
+// externas (como uma logo que ainda não existe) travarem a experiência.
+document.addEventListener('DOMContentLoaded', function () {
   const tempoDecorrido = Date.now() - carregouEm;
   const espera = Math.max(TEMPO_MINIMO_EXIBICAO_MS - tempoDecorrido, 0);
   setTimeout(esconderCarregamento, espera);
 });
+
+// Rede de segurança: se por qualquer motivo (erro de import, arquivo faltando,
+// script quebrado em outro lugar da página) nada esconder o overlay até aqui,
+// força esconder depois de 4s — nunca deixa a pessoa presa numa tela infinita.
+setTimeout(esconderCarregamento, 4000);
