@@ -263,6 +263,14 @@
   z-index: 250;
 }
 
+/* O atributo [hidden] sozinho perde pro "display: flex" acima (mesma
+   especificidade, mas a classe é escrita depois na cascata). Esse seletor
+   combinado (classe + [hidden]) tem especificidade maior e garante que
+   esconder de verdade sempre vence, não importa a ordem no arquivo. */
+.menu-colunas__dropdown[hidden] {
+  display: none;
+}
+
 .menu-colunas__item {
   display: flex;
   align-items: center;

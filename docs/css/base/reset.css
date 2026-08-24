@@ -72,6 +72,14 @@ table {
 }
 
 /* Respeita quem prefere menos movimento na tela inteira, não só em um componente */
+/* Garante que o atributo `hidden` do HTML SEMPRE esconda o elemento,
+   mesmo que algum componente defina "display: flex/grid/block" fixo
+   na própria classe (o que, sem isso, sobrescreveria o hidden e deixaria
+   o elemento visível o tempo todo, mesmo com hidden aplicado). */
+[hidden] {
+  display: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

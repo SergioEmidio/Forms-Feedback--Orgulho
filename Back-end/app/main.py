@@ -1,28 +1,45 @@
-# Ponto de entrada, cria o FastAPI e as rotas
+# app/main.py
+# Ponto de entrada do backend — junta banco, CORS e todas as rotas.
+
 from fastapi import FastAPI
-# Classe principal que cria a aplicação/servidor
-
 from fastapi.middleware.cors import CORSMiddleware
-# Libera o frontend (GitHub Pages) a fazer requisições pro backend sem ser bloqueado
-
-from .routers import respostas, salas, resumo, qrcode
-# Importa cada arquivo de rota separado, pra "plugar" no app principal
 
 from .database import engine, Base
-# engine conecta ao banco; Base.metadata.create_all(engine) cria as tabelas se não existirem
+from .routers import respostas, resumo, qrcode
+# "salas" de propósito NÃO está aqui — confirmado como não usado no projeto.
 
-
-##Esse import é da senha do nosso site, não apagar.
 from .login import router as login_router
+# Import da autenticação do site. Não apagar.
 
-# 2. Criação da aplicação
+Base.metadata.create_all(engine)
+
 app = FastAPI(
     title="API do Projeto de Feedback",
-    description="API para coletar respostas de feedback, gerar QR Codes e fornecer resumo estatístico.",
+    description="API para coletar respostas de feedback, gerar QR Codes, "
+    "importar/exportar planilhas e fornecer resumo estatístico.",
     version="1.0.0",
 )
-# 3. Inclusão das rotas
+
+# ============================================================
+# CORS — troque os endereços abaixo pelo domínio real do frontend
+# assim que ele estiver publicado.
+# ============================================================
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5500",   # Live Server local
+        "http://localhost:5500",   # Live Server local
+        # "https://seu-frontend-publicado.com",  # <- adicione quando publicar
+    ],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(login_router)
+app.include_router(respostas.router)
+app.include_router(resumo.router)
+app.include_router(qrcode.router)
+
 
 @app.get("/")
 def raiz():

@@ -1,14 +1,28 @@
-# ← Tabelas do banco como classes Python (SQLAlchemy)
+# app/models.py
+# Estrutura da tabela "respostas" no banco de dados.
+#
+# NOTA: Boolean é usado aqui (consentimento). ForeignKey e relationship
+# NÃO são usados de propósito — só fariam sentido se existisse uma tabela
+# "salas" ligada a cada resposta, e você confirmou que não vai usar isso.
+# Se um dia precisar (ex: agrupar respostas por apresentação/evento),
+# é só adicionar uma coluna sala_id com ForeignKey depois.
 
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
-# Tipos de coluna disponíveis pra desenhar as tabelas (ID, texto, número, sim/não, data, chave estrangeira)
+from sqlalchemy import Column, Integer, String, Date, DateTime, Boolean, Text
+from app.database import Base
 
-from sqlalchemy.sql import func
-# Permite usar func.now() pra data/hora automática (equivalente ao CURRENT_TIMESTAMP do SQL)
 
-from sqlalchemy.orm import relationship
-# Cria a ligação entre tabelas relacionadas (ex: uma resposta pertence a uma sala)
+class Resposta(Base):
+    __tablename__ = "respostas"
 
-from .database import Base
-# Importa a Base criada em database.py — toda tabela precisa herdar dela
+    id = Column(Integer, primary_key=True, index=True)
+    nome_completo = Column(String(200), nullable=False)
+    nascimento = Column(Date, nullable=False)
+    tipo_participante = Column(String(50), nullable=False, index=True)
+    outro_detalhe = Column(String(200), nullable=True)
+    nota = Column(Integer, nullable=False)
+    consentimento = Column(Boolean, nullable=False, default=False)
+    opiniao = Column(Text, nullable=True)
 
+    # Horário real de envio, capturado no navegador da pessoa (ver form.js) —
+    # não é o horário em que o servidor recebeu.
+    enviado_em = Column(DateTime(timezone=True), nullable=False, index=True)

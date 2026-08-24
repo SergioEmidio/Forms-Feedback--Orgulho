@@ -265,8 +265,21 @@ function mostrarToastSimples(mensagem) {
 }
 
 // ---------- EVENTOS FIXOS ----------
+// on(): registra um listener com segurança. Se o elemento não existir na
+// página, avisa no Console e SEGUE EM FRENTE, em vez de travar a função
+// inteira (o que faria todo listener registrado DEPOIS dele nunca funcionar).
+function on(id, evento, handler) {
+  const elemento = document.getElementById(id);
+  if (!elemento) {
+    console.warn(`[dashboard] Elemento #${id} não encontrado no HTML — esse listener foi pulado, mas o resto da página continua funcionando.`);
+    return null;
+  }
+  elemento.addEventListener(evento, handler);
+  return elemento;
+}
+
 function ligarEventosFixos() {
-  document.getElementById('botao-sair').addEventListener('click', function () {
+  on('botao-sair', 'click', function () {
     limparToken();
     navegarComCarregamento('login.html');
   });
@@ -274,62 +287,66 @@ function ligarEventosFixos() {
   // Menu do usuário (dropdown)
   const botaoUsuario = document.getElementById('botao-usuario');
   const dropdown = document.getElementById('menu-usuario-dropdown');
-  botaoUsuario.addEventListener('click', function (evento) {
-    evento.stopPropagation();
-    const aberto = !dropdown.hidden;
-    dropdown.hidden = aberto;
-    botaoUsuario.setAttribute('aria-expanded', String(!aberto));
-  });
-  document.addEventListener('click', function () {
-    dropdown.hidden = true;
-    botaoUsuario.setAttribute('aria-expanded', 'false');
-  });
-  document.addEventListener('keydown', function (evento) {
-    if (evento.key === 'Escape') {
+  if (botaoUsuario && dropdown) {
+    botaoUsuario.addEventListener('click', function (evento) {
+      evento.stopPropagation();
+      const aberto = !dropdown.hidden;
+      dropdown.hidden = aberto;
+      botaoUsuario.setAttribute('aria-expanded', String(!aberto));
+    });
+    document.addEventListener('click', function () {
       dropdown.hidden = true;
       botaoUsuario.setAttribute('aria-expanded', 'false');
-    }
-  });
+    });
+  } else {
+    console.warn('[dashboard] Menu de usuário não encontrado (#botao-usuario ou #menu-usuario-dropdown).');
+  }
 
   // Sombra da navbar ao rolar
   window.addEventListener('scroll', function () {
-    document.getElementById('navbar-projeto').classList.toggle('navbar-projeto--rolada', window.scrollY > 8);
+    const navbar = document.getElementById('navbar-projeto');
+    if (navbar) navbar.classList.toggle('navbar-projeto--rolada', window.scrollY > 8);
   });
 
   // Modo apresentação
-  document.getElementById('botao-apresentacao').addEventListener('click', ativarModoApresentacao);
-  document.getElementById('botao-sair-apresentacao').addEventListener('click', desativarModoApresentacao);
+  on('botao-apresentacao', 'click', ativarModoApresentacao);
+  on('botao-sair-apresentacao', 'click', desativarModoApresentacao);
 
   // Densidade da tabela
-  document.getElementById('botao-densidade').addEventListener('click', function () {
-    document.getElementById('tabela-respostas').classList.toggle('tabela-compacta');
+  on('botao-densidade', 'click', function () {
+    const tabela = document.getElementById('tabela-respostas');
+    if (tabela) tabela.classList.toggle('tabela-compacta');
   });
 
-  document.getElementById('botao-atualizar').addEventListener('click', atualizarDados);
-
-  document.getElementById('botao-tema').addEventListener('click', alternarTema);
-
-  document.getElementById('botao-copiar-link').addEventListener('click', copiarLinkComFiltros);
+  on('botao-atualizar', 'click', atualizarDados);
+  on('botao-tema', 'click', alternarTema);
+  on('botao-copiar-link', 'click', copiarLinkComFiltros);
 
   // Dropdown de filtros salvos
   const botaoFiltrosSalvos = document.getElementById('botao-filtros-salvos');
   const dropdownFiltrosSalvos = document.getElementById('dropdown-filtros-salvos');
-  botaoFiltrosSalvos.addEventListener('click', function (evento) {
-    evento.stopPropagation();
-    const aberto = !dropdownFiltrosSalvos.hidden;
-    dropdownFiltrosSalvos.hidden = aberto;
-    if (!aberto) renderizarListaFiltrosSalvos();
-  });
-  document.getElementById('botao-salvar-filtro-atual').addEventListener('click', function (evento) {
+  if (botaoFiltrosSalvos && dropdownFiltrosSalvos) {
+    botaoFiltrosSalvos.addEventListener('click', function (evento) {
+      evento.stopPropagation();
+      const aberto = !dropdownFiltrosSalvos.hidden;
+      dropdownFiltrosSalvos.hidden = aberto;
+      if (!aberto) renderizarListaFiltrosSalvos();
+    });
+    document.addEventListener('click', function () {
+      dropdownFiltrosSalvos.hidden = true;
+    });
+  } else {
+    console.warn('[dashboard] Dropdown de filtros salvos não encontrado (#botao-filtros-salvos ou #dropdown-filtros-salvos).');
+  }
+
+  on('botao-salvar-filtro-atual', 'click', function (evento) {
     evento.stopPropagation();
     salvarFiltroAtual();
   });
-  document.getElementById('botao-fechar-filtros-salvos').addEventListener('click', function (evento) {
+
+  on('botao-fechar-filtros-salvos', 'click', function (evento) {
     evento.stopPropagation();
-    dropdownFiltrosSalvos.hidden = true;
-  });
-  document.addEventListener('click', function () {
-    dropdownFiltrosSalvos.hidden = true;
+    if (dropdownFiltrosSalvos) dropdownFiltrosSalvos.hidden = true;
   });
 
   // Atalhos de teclado: "/" foca a busca, "Esc" fecha painéis abertos
@@ -338,12 +355,14 @@ function ligarEventosFixos() {
 
     if (evento.key === '/' && !digitandoEmCampo) {
       evento.preventDefault();
-      document.getElementById('filtro-busca').focus();
+      const busca = document.getElementById('filtro-busca');
+      if (busca) busca.focus();
     }
 
     if (evento.key === 'Escape') {
       fecharPainelDetalhe();
-      dropdownFiltrosSalvos.hidden = true;
+      if (dropdown) dropdown.hidden = true;
+      if (dropdownFiltrosSalvos) dropdownFiltrosSalvos.hidden = true;
       if (document.body.classList.contains('modo-apresentacao')) desativarModoApresentacao();
     }
   });
@@ -361,10 +380,10 @@ function ligarEventosFixos() {
     });
   });
 
-  document.getElementById('botao-limpar-filtros').addEventListener('click', limparTodosOsFiltros);
-  document.getElementById('botao-limpar-filtros-vazio').addEventListener('click', limparTodosOsFiltros);
+  on('botao-limpar-filtros', 'click', limparTodosOsFiltros);
+  on('botao-limpar-filtros-vazio', 'click', limparTodosOsFiltros);
 
-  document.getElementById('toggle-percentual').addEventListener('change', function (evento) {
+  on('toggle-percentual', 'change', function (evento) {
     mostrarPercentual = evento.target.checked;
     renderizarGraficosComTransicao();
   });
@@ -397,25 +416,25 @@ function ligarEventosFixos() {
     });
   });
 
-  document.getElementById('filtro-busca').addEventListener('input', function () {
+  on('filtro-busca', 'input', function () {
     paginaAtual = 1;
     renderizarGraficosComTransicao();
     renderizarTabelaComTransicao();
   });
-  document.getElementById('filtro-tipo').addEventListener('change', function () {
+  on('filtro-tipo', 'change', function () {
     paginaAtual = 1;
     renderizarGraficosComTransicao();
     renderizarTabelaComTransicao();
   });
-  document.getElementById('filtro-nota-min').addEventListener('change', function () {
+  on('filtro-nota-min', 'change', function () {
     paginaAtual = 1;
     renderizarGraficosComTransicao();
     renderizarTabelaComTransicao();
   });
 
-  document.getElementById('botao-exportar-csv').addEventListener('click', exportarCSV);
+  on('botao-exportar-csv', 'click', exportarCSV);
 
-  document.getElementById('checkbox-selecionar-todos').addEventListener('change', function (evento) {
+  on('checkbox-selecionar-todos', 'change', function (evento) {
     const respostasVisiveis = obterRespostasFiltradas();
     if (evento.target.checked) {
       respostasVisiveis.forEach((r) => idsSelecionados.add(String(r.id)));
@@ -425,28 +444,28 @@ function ligarEventosFixos() {
     renderizarTabela();
   });
 
-  document.getElementById('botao-limpar-selecao').addEventListener('click', function () {
+  on('botao-limpar-selecao', 'click', function () {
     idsSelecionados.clear();
     renderizarTabela();
   });
 
-  document.getElementById('botao-excluir-selecionados').addEventListener('click', function () {
+  on('botao-excluir-selecionados', 'click', function () {
     confirmarExclusao(Array.from(idsSelecionados));
   });
 
-  document.getElementById('botao-pagina-anterior').addEventListener('click', function () {
+  on('botao-pagina-anterior', 'click', function () {
     if (paginaAtual > 1) {
       paginaAtual--;
       renderizarTabela();
     }
   });
-  document.getElementById('botao-pagina-proxima').addEventListener('click', function () {
+  on('botao-pagina-proxima', 'click', function () {
     paginaAtual++;
     renderizarTabela();
   });
 
-  document.getElementById('botao-fechar-detalhe').addEventListener('click', fecharPainelDetalhe);
-  document.getElementById('painel-detalhe-overlay').addEventListener('click', function (evento) {
+  on('botao-fechar-detalhe', 'click', fecharPainelDetalhe);
+  on('painel-detalhe-overlay', 'click', function (evento) {
     if (evento.target.id === 'painel-detalhe-overlay') fecharPainelDetalhe();
   });
 

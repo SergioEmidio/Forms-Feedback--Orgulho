@@ -1,13 +1,41 @@
-#← Conexão com o PostgreSQL (Neon) via SQLAlchemy
+# app/database.py
+# Conexão com o PostgreSQL (Neon) via SQLAlchemy.
+
 import os
-# Acessa variáveis de ambiente do sistema (necessário pra pegar a URL do banco)
-
 from dotenv import load_dotenv
-# Lê o arquivo .env e carrega a senha/URL do banco pras variáveis de ambiente
-
 from sqlalchemy import create_engine
-# Cria a "conexão motor" que fala de fato com o PostgreSQL
-
 from sqlalchemy.ext.declarative import declarative_base
-# Cria a classe Base, que todo modelo de tabela (em models.py) vai herdar
+from sqlalchemy.orm import sessionmaker
 
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError(
+        "Variável de ambiente DATABASE_URL ausente. No Neon, use a connection "
+        "string com '-pooler' no host (ex: ...ep-xxx-pooler.neon.tech/...) "
+        "e '?sslmode=require' no final — o pooler é o que permite aguentar "
+        "várias pessoas conectando ao mesmo tempo sem esgotar conexões."
+    )
+
+# pool_pre_ping: testa a conexão antes de usar — evita erro quando o Neon
+# hiberna o banco por inatividade e a conexão antiga já não é válida.
+# pool_recycle: descarta conexões com mais de 5 minutos, pelo mesmo motivo.
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,
+    pool_recycle=300,
+)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+
+def obter_db():
+    """Dependência do FastAPI: abre uma sessão do banco por requisição e
+    garante que ela é fechada no final, mesmo se der erro no meio."""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
