@@ -49,6 +49,12 @@ app.include_router(resumo.router)
 app.include_router(qrcode.router)
 
 
+# 1. Libera o acesso à pasta "docs" para o navegador conseguir ler o CSS e o JS
+app.mount("/docs", StaticFiles(directory="docs"), name="docs_assets")
+
+# 2. Faz o FastAPI servir a raiz (onde está o index.html)
+app.mount("/", StaticFiles(directory=".", html=True), name="root")
+
 @app.get("/")
 def raiz():
     return {"mensagem": "API do RefMap rodando!"}
