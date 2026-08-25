@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Chamar a API pra nao deixar ela dormir
         run: |
-          curl -s -o /dev/null -w "Status: %{http_code}\n" https://feedback-orion-project.onrender.com/
+          curl -s -o /dev/null -w "Status: %{http_code}\n" https://forms-feedback-orgulho.onrender.com/

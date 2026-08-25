@@ -2,7 +2,7 @@
 // Constantes centrais do projeto. Qualquer arquivo que precisar desses valores
 // deve importar DAQUI, nunca declarar o próprio número/URL solto no meio do código.
 
-export const BASE_URL = 'https://feedback-orion-project.onrender.com';
+export const BASE_URL = 'https://forms-feedback-orgulho.onrender.com';
 export const RESPOSTAS_URL = `${BASE_URL}/respostas`;
 export const LOGIN_URL = `${BASE_URL}/login`;
 
