@@ -1,0 +1,15 @@
+name: Manter backend acordado
+
+# Roda automaticamente a cada 10 minutos, o tempo todo, sem precisar
+# de ninguém estar com o site aberto. O GitHub que cuida disso sozinho.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: # também permite rodar manualmente, pelo botão "Run workflow" no GitHub
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar a API pra não deixar ela dormir
+        run: curl -s -o /dev/null -w "Status: %{http_code}\n" https://feedback-orion-project.onrender.com/
