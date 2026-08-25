@@ -1,6 +1,6 @@
 # app/main.py
 # Ponto de entrada do backend — junta banco, CORS e todas as rotas.
-
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -20,6 +20,13 @@ app = FastAPI(
     version="1.0.0",
 )
 
+class EndpointFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        # Oculta dos logs as requisições para o favicon ou para a sua rota de ping
+        return "GET /favicon.ico" not in record.getMessage() and "GET / " not in record.getMessage()
+
+# Adiciona o filtro ao logger padrão do uvicorn.access
+logging.getLogger("uvicorn.access").addFilter(EndpointFilter())
 # ============================================================
 # CORS — troque os endereços abaixo pelo domínio real do frontend
 # assim que ele estiver publicado.
