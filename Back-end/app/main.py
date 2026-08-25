@@ -32,15 +32,18 @@ logging.getLogger("uvicorn.access").addFilter(EndpointFilter())
 # CORS — troque os endereços abaixo pelo domínio real do frontend
 # assim que ele estiver publicado.
 # ============================================================
+origins = [
+    "http://127.0.0.1:5500",                  # Live Server local
+    "http://localhost:5500",                  # Live Server local
+    "https://sergioemidio.github.io",         # O seu GitHub Pages oficial
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://127.0.0.1:5500",   # Live Server local
-        "http://localhost:5500",   # Live Server local
-        # "https://seu-frontend-publicado.com",  # <- adicione quando publicar
-    ],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=origins,                    # Usa a lista de origens seguras que definimos acima
+    allow_credentials=True,
+    allow_methods=["*"],                      # Libera todos os métodos (GET, POST, OPTIONS, etc.)
+    allow_headers=["*"],                      # Libera todos os cabeçalhos
 )
 
 app.include_router(login_router)
