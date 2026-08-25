@@ -10,4 +10,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Chamar a API pra nao deixar ela dormir
-        run: curl -s -o /dev/null -w "Status: %{http_code}\n" https://feedback-orion-project.onrender.com/
+        run: |
+          curl -s -o /dev/null -w "Status: %{http_code}\n" https://feedback-orion-project.onrender.com/
