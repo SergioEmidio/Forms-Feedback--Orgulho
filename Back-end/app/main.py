@@ -1,6 +1,7 @@
 # app/main.py
 # Ponto de entrada do backend — junta banco, CORS e todas as rotas.
 import logging
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
