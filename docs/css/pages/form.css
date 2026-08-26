@@ -213,3 +213,18 @@ body.conteudo-pronto .campo:nth-child(6) { animation-delay: 350ms; }
     padding: var(--space-12) var(--space-6) var(--space-16);
   }
 }
+
+/* ===== AVISO DE ENVIO LENTO (amarelo, aparece só durante o envio) ===== */
+.aviso-envio-lento {
+  margin-top: var(--space-3);
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-warning);
+  animation: aviso-envio-lento-entrada 300ms var(--ease-standard) both;
+}
+
+@keyframes aviso-envio-lento-entrada {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

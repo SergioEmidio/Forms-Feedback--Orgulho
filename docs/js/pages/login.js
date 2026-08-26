@@ -58,12 +58,29 @@ formulario.addEventListener('submit', async function (event) {
 
     const foiCredencialInvalida = erro.status === 401;
 
+    // Se não foi problema de credencial (ou seja, foi erro de rede/servidor),
+    // tenta mais uma vez automaticamente antes de incomodar a pessoa com um
+    // popup — o servidor pode só estar "acordando" depois de ficar inativo
+    // (comum em planos gratuitos de hospedagem), e uma segunda tentativa
+    // alguns segundos depois costuma resolver sozinha.
+    if (!foiCredencialInvalida && !tentouNovamente) {
+      tentouNovamente = true;
+      botaoEntrar.querySelector('.cb-08__label').textContent = 'AGUARDE, TENTANDO DE NOVO...';
+
+      setTimeout(function () {
+        formulario.requestSubmit();
+      }, 4000);
+      return;
+    }
+
+    tentouNovamente = false;
+
     abrirPopup({
       tipo: 'erro',
       titulo: foiCredencialInvalida ? 'Usuário ou senha incorretos' : 'Não foi possível entrar',
       texto: foiCredencialInvalida
         ? 'Confira as credenciais e tente novamente.'
-        : 'Houve um problema de conexão com o servidor. Tente novamente.',
+        : 'O servidor pode estar "acordando" depois de um tempo parado — isso é normal e leva até 1 minuto. Tente novamente.',
       textoBotao: 'Tentar novamente',
       aoConfirmar: function () {
         campoSenha.value = '';

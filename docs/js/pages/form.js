@@ -329,6 +329,7 @@ formulario.addEventListener('submit', async function (event) {
   // Evita clique duplo enquanto a requisição está em andamento
   botaoEnviar.classList.add('cb-08__btn--bloqueado');
   botaoEnviar.setAttribute('aria-busy', 'true');
+  document.getElementById('aviso-envio-lento').hidden = false;
 
   // Marca o horário exato do envio (não da abertura da página nem do preenchimento,
   // mas do momento em que passou na validação e está de fato indo pro backend).
@@ -352,13 +353,14 @@ formulario.addEventListener('submit', async function (event) {
     abrirPopup({
       tipo: 'erro',
       titulo: 'Não foi possível enviar',
-      texto: 'Houve um problema de conexão. Seus dados não foram perdidos — tente enviar novamente.',
+      texto: 'O servidor pode estar "acordando" depois de um tempo parado — isso é normal. Seus dados não foram perdidos, tente novamente.',
       textoBotao: 'Tentar novamente',
       aoConfirmar: () => {},
     });
   } finally {
     atualizarProgressoBotao(); // reaplica bloqueado/pronto de acordo com o progresso atual
     botaoEnviar.removeAttribute('aria-busy');
+    document.getElementById('aviso-envio-lento').hidden = true;
   }
 });
 
@@ -374,6 +376,17 @@ botaoEnviar.addEventListener('click', function (event) {
   setTimeout(function () {
     botaoEnviar.classList.remove('is-glitching');
   }, 420);
+});
+
+// ---------- GARANTIR FORMULÁRIO LIMPO AO VOLTAR/RECARREGAR ----------
+// Alguns navegadores restauram os valores digitados ao voltar do cache
+// de navegação (bfcache) ou ao recarregar, mesmo com autocomplete="off"
+// no HTML. Isso força uma limpeza real toda vez que a página é exibida
+// de novo dessa forma.
+window.addEventListener('pageshow', function (evento) {
+  if (evento.persisted) {
+    resetarFormularioCompleto();
+  }
 });
 
 // ---------- ESTADO INICIAL DA PÁGINA ----------

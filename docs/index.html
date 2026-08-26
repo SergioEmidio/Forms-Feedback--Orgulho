@@ -42,7 +42,7 @@
 
   <!-- ===== CONTAINER DO FORMULÁRIO ===== -->
   <div id="container-formulario">
-    <form id="formulario-avaliacao" action="" method="post" novalidate>
+    <form id="formulario-avaliacao" action="" method="post" novalidate autocomplete="off">
 
       <!-- NOME COMPLETO -->
       <div class="campo" id="div-nome">
@@ -181,6 +181,9 @@
             <span class="cb-08__spinner" aria-hidden="true"></span>
           </button>
         </div>
+        <p id="aviso-envio-lento" class="aviso-envio-lento" hidden aria-live="polite">
+          <span aria-hidden="true">⚠️</span> Isso pode demorar um pouco — não saia do formulário!
+        </p>
       </div>
 
     </form>
