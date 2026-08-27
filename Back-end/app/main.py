@@ -31,7 +31,7 @@ app.add_middleware(
     allow_origins=[
         "http://127.0.0.1:5500",   # Live Server local
         "http://localhost:5500",   # Live Server local
-        # "https://seu-frontend-publicado.com",  # <- adicione quando publicar
+        "https://sergioemidio.github.io",  # GitHub Pages (confirmado)
     ],
     allow_methods=["*"],
     allow_headers=["*"],

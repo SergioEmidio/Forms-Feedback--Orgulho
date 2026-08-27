@@ -7,6 +7,7 @@ import { navegarComCarregamento } from '../components/carregando.js';
 
 const formulario = document.getElementById('formulario-login');
 const botaoEntrar = formulario.querySelector('.cb-08__btn');
+let tentouNovamente = false;
 const campoUsuario = document.getElementById('usuario');
 const campoSenha = document.getElementById('senha');
 const botaoMostrarSenha = document.getElementById('botao-mostrar-senha');
