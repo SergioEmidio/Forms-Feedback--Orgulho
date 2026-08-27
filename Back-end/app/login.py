@@ -1,20 +1,9 @@
 # app/routers/login.py
-#
-# Rota de autenticação do dashboard. Login simples de administrador único
-# (adequado pro escopo de um projeto escolar) — usuário e hash da senha
-# vêm de variáveis de ambiente (.env), nunca do código.
-#
-# Requisitos a adicionar no requirements.txt:
-#   fastapi
-#   uvicorn
-#   python-jose[cryptography]
-#   passlib[bcrypt]
-#   python-dotenv
-#   pydantic
+# (trecho inteiro com pequenas proteções adicionais para evitar 500s quando o hash estiver inválido)
 
 import os
 from datetime import datetime, timedelta, timezone
-
+import logging
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -25,10 +14,10 @@ from pydantic import BaseModel
 load_dotenv()
 
 # ============================================================
-# CONFIGURAÇÃO (vem do .env — NUNCA deixe valores reais aqui no código)
+# CONFIGURAÇÃO (vem do .env)
 # ============================================================
 ADMIN_USUARIO = os.getenv("ADMIN_USUARIO")
-ADMIN_SENHA_HASH = os.getenv("ADMIN_SENHA_HASH")  # hash bcrypt, não a senha em texto puro
+ADMIN_SENHA_HASH = os.getenv("ADMIN_SENHA_HASH")  # hash bcrypt esperado
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 JWT_ALGORITMO = "HS256"
 JWT_EXPIRA_MINUTOS = 120  # token expira em 2 horas
@@ -44,10 +33,31 @@ esquema_bearer = HTTPBearer()
 
 router = APIRouter(prefix="", tags=["autenticação"])
 
+# ------------------------------------------------------------
+# Proteção adicional: detecta se ADMIN_SENHA_HASH tem formato inválido
+# e prepara um hash dummy para usar em verificações de timing sem lançar.
+# ------------------------------------------------------------
+_logger = logging.getLogger(__name__)
+try:
+    # Testa apenas a estrutura: se a string for um hash bcrypt válido
+    # a chamada verify com uma senha qualquer não necessariamente retorna True,
+    # mas lançará erro se o hash for malformado. Usamos isso para detectar malformações.
+    contexto_senha.verify("test", ADMIN_SENHA_HASH)
+    _VALID_HASH_PARA_TIMING = ADMIN_SENHA_HASH
+except Exception:
+    _logger.warning(
+        "ADMIN_SENHA_HASH parece não ser um hash bcrypt válido. "
+        "Isso pode indicar que as variáveis no .env estão trocadas "
+        "(ex.: JWT_SECRET_KEY em ADMIN_SENHA_HASH) ou que o hash está truncado."
+        " O sistema fará validações seguras, mas corrija o .env para evitar problemas."
+    )
+    # Geramos um hash dummy seguro para usar apenas em verificações de timing,
+    # assim não levantamos exceções quando usuário incorreto é testado.
+    _VALID_HASH_PARA_TIMING = contexto_senha.hash("dummy_timing_password")
+
 
 # ============================================================
-# MODELOS (request/response) — mova pra schemas.py se preferir manter
-# tudo centralizado lá, essa parte não precisa ficar aqui necessariamente.
+# MODELOS
 # ============================================================
 class LoginRequest(BaseModel):
     usuario: str
@@ -70,16 +80,28 @@ def _criar_token(usuario: str) -> str:
 
 
 def _autenticar(usuario: str, senha: str) -> bool:
-    """Confere usuário + senha contra as credenciais do .env, usando bcrypt
-    (nunca comparando strings em texto puro — isso evita timing attacks
-    e garante que a senha real nunca precisou ficar salva em lugar nenhum)."""
+    """Confere usuário + senha contra as credenciais do .env, usando bcrypt.
+
+    Importante: qualquer exceção durante verify() é tratada como falha de autenticação
+    (retornamos False) — não queremos que uma string malformada no .env quebre a rota.
+    """
+    # Se o usuário estiver incorreto, fazemos uma verificação contra um hash
+    # (o hash real ou um hash dummy) só para igualar o tempo de resposta e evitar
+    # diferença de timing que indique existência do usuário.
     if usuario != ADMIN_USUARIO:
-        # Mesmo com usuário errado, ainda rodamos o verify() abaixo com um hash
-        # qualquer, pra não vazar (por tempo de resposta) se o usuário existe ou não.
-        contexto_senha.verify(senha, ADMIN_SENHA_HASH)
+        try:
+            contexto_senha.verify(senha, _VALID_HASH_PARA_TIMING)
+        except Exception:
+            # ignoramos erros aqui — já usamos o hash dummy se necessário
+            pass
         return False
 
-    return contexto_senha.verify(senha, ADMIN_SENHA_HASH)
+    # Se o usuário bate, tentamos verificar a senha contra o hash real.
+    try:
+        return contexto_senha.verify(senha, ADMIN_SENHA_HASH)
+    except Exception:
+        _logger.warning("Falha ao verificar a senha para o usuário administrador (hash inválido?).")
+        return False
 
 
 # ============================================================
@@ -90,8 +112,6 @@ def login(dados: LoginRequest):
     autenticado = _autenticar(dados.usuario, dados.senha)
 
     if not autenticado:
-        # Mensagem genérica de propósito — não revela se o erro foi
-        # no usuário ou na senha, dificulta ataque de enumeração de usuários.
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Usuário ou senha incorretos.",
@@ -102,19 +122,7 @@ def login(dados: LoginRequest):
 
 
 # ============================================================
-# DEPENDÊNCIA REUTILIZÁVEL — protege qualquer outra rota do dashboard.
-#
-# Uso em outro arquivo de rota (ex: respostas.py):
-#
-#   from app.routers.login import verificar_token
-#
-#   @router.get("/respostas")
-#   def listar_respostas(usuario: str = Depends(verificar_token)):
-#       ...
-#
-# Sem isso, QUALQUER pessoa pode chamar /respostas direto pela API,
-# mesmo sem nunca ter feito login — é essa dependência que fecha o cofre,
-# não a tela de login sozinha.
+# Dependência para proteger rotas usando bearer token (permanece igual)
 # ============================================================
 def verificar_token(credenciais: HTTPAuthorizationCredentials = Depends(esquema_bearer)) -> str:
     token = credenciais.credentials

@@ -1,5 +1,6 @@
 // pages/login.js
 // Lógica exclusiva da tela de login.
+// (pequenas correções: reset do formulário no sucesso e reset do label do botão ao final)
 
 import { fazerLogin, salvarToken } from '../services/authServices.js';
 import { abrirPopup } from '../components/popup.js';
@@ -45,6 +46,9 @@ formulario.addEventListener('submit', async function (event) {
     const resposta = await fazerLogin(usuario, senha);
     salvarToken(resposta.token);
 
+    // limpa o formulário para que, após redirecionamento, os campos não fiquem preenchidos
+    formulario.reset();
+
     abrirPopup({
       tipo: 'sucesso',
       titulo: 'Login realizado!',
@@ -57,13 +61,8 @@ formulario.addEventListener('submit', async function (event) {
   } catch (erro) {
     console.error(erro);
 
-    const foiCredencialInvalida = erro.status === 401;
+    const foiCredencialInvalida = erro && erro.status === 401;
 
-    // Se não foi problema de credencial (ou seja, foi erro de rede/servidor),
-    // tenta mais uma vez automaticamente antes de incomodar a pessoa com um
-    // popup — o servidor pode só estar "acordando" depois de ficar inativo
-    // (comum em planos gratuitos de hospedagem), e uma segunda tentativa
-    // alguns segundos depois costuma resolver sozinha.
     if (!foiCredencialInvalida && !tentouNovamente) {
       tentouNovamente = true;
       botaoEntrar.querySelector('.cb-08__label').textContent = 'AGUARDE, TENTANDO DE NOVO...';
@@ -91,5 +90,8 @@ formulario.addEventListener('submit', async function (event) {
   } finally {
     botaoEntrar.disabled = false;
     botaoEntrar.removeAttribute('aria-busy');
+    // garante que o label volte ao estado original
+    const label = botaoEntrar.querySelector('.cb-08__label');
+    if (label) label.textContent = 'ENTRAR';
   }
 });
