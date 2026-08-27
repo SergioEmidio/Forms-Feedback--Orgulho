@@ -9,19 +9,48 @@
    causava aquele "recorte"/emenda visível no fundo. */
 body {
   background:
-    radial-gradient(120% 90% at 15% -10%, rgba(0, 255, 249, 0.10) 0%, transparent 60%),
-    radial-gradient(110% 90% at 100% 110%, rgba(255, 0, 64, 0.08) 0%, transparent 65%),
+    radial-gradient(120% 90% at 15% -10%, rgba(121, 104, 179, 0.10) 0%, transparent 60%),
+    radial-gradient(110% 90% at 100% 110%, rgba(157, 143, 214, 0.08) 0%, transparent 65%),
     var(--color-bg);
   background-attachment: fixed;
+}
+#cabecalho-projeto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0; 
+}
+
+#cabecalho-projeto img {
+    display: block;
+    /* Tamanho controlado e proporcional */
+    height: clamp(300px, 15vw, 160px);
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+
+    /* Garante a máxima nitidez */
+    image-rendering: -webkit-optimize-contrast;
+    
+    /* Removemos o -20px exagerado para não quebrar o layout */
+    margin: 0 auto;
+
+    /* Estica somente horizontalmente */
+    transform: scaleX(1.45);
 }
 
 #tela-login {
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: var(--space-6) var(--space-4);
+  justify-content: center; 
+  
+  /* Mudei de 16px para 6px para colar bem a logo do card de login */
+  gap: -20px; 
+  
+  padding: var(--space-4);
 }
 
 /* ===== CARD =====

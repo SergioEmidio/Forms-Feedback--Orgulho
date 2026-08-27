@@ -17,9 +17,9 @@
   padding: var(--space-3) var(--space-4);
   margin: 0 auto var(--space-6);
   max-width: var(--container-max-width);
-  background: rgba(13, 13, 24, 0.85);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.85);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   transition: box-shadow var(--duration-normal) var(--ease-standard);
@@ -63,7 +63,7 @@
 
 .navbar-projeto__link--ativo {
   color: var(--color-primary);
-  background: rgba(0, 255, 249, 0.08);
+  background: rgba(121, 104, 179, 0.08);
 }
 
 /* ===== GRUPO DE FERRAMENTAS (centro da navbar) ===== */
@@ -94,7 +94,7 @@
 
 .botao-icone--ativo {
   color: var(--color-primary);
-  background: rgba(0, 255, 249, 0.1);
+  background: rgba(121, 104, 179, 0.1);
 }
 
 .icone-atualizar {

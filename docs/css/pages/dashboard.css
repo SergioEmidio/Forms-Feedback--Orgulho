@@ -8,6 +8,31 @@
   margin: 0 auto;
   padding: var(--space-6) var(--space-4) var(--space-16);
 }
+#cabecalho-projeto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0; 
+}
+
+#cabecalho-projeto img {
+    display: block;
+    /* Tamanho controlado e proporcional */
+    height: clamp(350px, 15vw, 300px);
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+
+    /* Garante a máxima nitidez */
+    image-rendering: -webkit-optimize-contrast;
+    
+    /* Removemos o -20px exagerado para não quebrar o layout */
+    margin: 0 auto;
+
+    /* Estica somente horizontalmente */
+    transform: scaleX(1.45);
+}
+
 
 /* ===== NAVBAR / BARRA DE FERRAMENTAS ===== */
 .navbar-projeto {
@@ -440,6 +465,7 @@ body.conteudo-pronto .kpi-card:nth-child(3) { animation-delay: 120ms; }
 
 .th-ordenavel {
   cursor: pointer;
+  -webkit-user-select: noone;
   user-select: none;
   transition: color var(--duration-fast) var(--ease-standard);
 }
@@ -491,7 +517,7 @@ body.conteudo-pronto .kpi-card:nth-child(3) { animation-delay: 120ms; }
 }
 
 .linha-selecionada {
-  background: rgba(0, 255, 249, 0.06);
+  background: rgba(121, 104, 179, 0.06);
 }
 
 .celula-nota {
@@ -550,7 +576,8 @@ body.conteudo-pronto .kpi-card:nth-child(3) { animation-delay: 120ms; }
   position: fixed;
   inset: 0;
   z-index: 1500;
-  background: rgba(5, 5, 16, 0.6);
+  background: rgba(7, 5, 18, 0.6);
+  -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   animation: fade-in 200ms ease both;
 }
@@ -951,7 +978,7 @@ body.conteudo-pronto .resumo-executivo {
 }
 
 @keyframes linha-nova-destaque {
-  0% { background: rgba(0, 255, 249, 0.18); }
+  0% { background: rgba(121, 104, 179, 0.18); }
   100% { background: transparent; }
 }
 

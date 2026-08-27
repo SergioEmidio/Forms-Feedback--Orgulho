@@ -16,7 +16,7 @@
   --r: var(--color-danger);
   --c: var(--color-primary);
   font-family: var(--font-family-base);
-  background: radial-gradient(90% 120% at 20% -10%, rgba(248,113,113,.08) 0%, transparent 55%), radial-gradient(80% 100% at 100% 100%, rgba(0,255,249,.10) 0%, transparent 60%), var(--color-bg);
+  background: radial-gradient(90% 120% at 20% -10%, rgba(157,143,214,.08) 0%, transparent 55%), radial-gradient(80% 100% at 100% 100%, rgba(121,104,179,.10) 0%, transparent 60%), var(--color-bg);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -80,6 +80,7 @@
   text-transform: uppercase;
   cursor: pointer;
   overflow: hidden;
+  -webkit-user-select: none;
   user-select: none;
   transition: color .1s, border-color var(--duration-normal) var(--ease-standard), opacity var(--duration-normal) var(--ease-standard);
 }
@@ -90,8 +91,8 @@
 }
 
 /* ===== ESTADO: AINDA FALTAM CAMPOS OBRIGATÓRIOS (0/4 a 3/4) =====
-   Usa classe em vez de :disabled real, porque um <button disabled> de
-   verdade não dispara clique nenhum — e precisamos do clique pra
+  Usa classe em vez de :disabled real, porque um <button disabled> de
+  verdade não dispara clique nenhum — e precisamos do clique pra
    mostrar a animação de balanço avisando "ainda não dá". */
 .cb-08__btn--bloqueado {
   cursor: not-allowed;
@@ -104,7 +105,7 @@
 }
 
 /* ===== ESTADO: PRONTO (4/4 preenchido, clicável) =====
-   Fica com a mesma aparência "preenchida" que o hover normal já tinha,
+  Fica com a mesma aparência "preenchida" que o hover normal já tinha,
    sem precisar do mouse em cima — assim a pessoa reconhece que já pode enviar. */
 .cb-08__btn.cb-08__btn--pronto {
   color: var(--color-bg);

@@ -7,8 +7,8 @@
 body {
   padding: var(--space-6) var(--space-4) var(--space-16);
   background:
-    radial-gradient(90% 60% at 20% -10%, rgba(255, 0, 64, 0.08) 0%, transparent 55%),
-    radial-gradient(80% 60% at 100% 0%, rgba(0, 255, 249, 0.08) 0%, transparent 60%),
+    radial-gradient(90% 60% at 20% -10%, rgba(157, 143, 214, 0.08) 0%, transparent 55%),
+    radial-gradient(80% 60% at 100% 0%, rgba(121, 104, 179, 0.08) 0%, transparent 60%),
     var(--color-bg);
 }
 
@@ -20,10 +20,20 @@ body {
 }
 
 #cabecalho-projeto img {
-  max-height: 64px;
-  margin: 0 auto var(--space-3);
-}
+    display: block;
+    height: clamp(320px, 18vw, 180px);
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    /* Garante a máxima nitidez ao redimensionar imagens/ícones */
+    image-rendering: -webkit-optimize-contrast;
+    
 
+    margin: -20px auto 0;
+
+    /* Estica somente horizontalmente */
+    transform: scaleX(1.45);
+}
 #cabecalho-projeto h1 {
   margin-bottom: var(--space-2);
 }
@@ -151,8 +161,8 @@ body.conteudo-pronto .campo:nth-child(6) { animation-delay: 350ms; }
 .opcao-outro-detalhe {
   margin-top: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  background: rgba(0, 255, 249, 0.06);
-  border: 1px solid rgba(0, 255, 249, 0.22);
+  background: rgba(121, 104, 179, 0.06);
+  border: 1px solid rgba(121, 104, 179, 0.22);
   border-radius: var(--radius-md);
   animation: revelar-campo var(--duration-normal) var(--ease-emphasized) both;
 }
