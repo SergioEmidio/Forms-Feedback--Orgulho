@@ -491,7 +491,7 @@ body.conteudo-pronto .kpi-card:nth-child(3) { animation-delay: 120ms; }
 }
 
 .linha-selecionada {
-  background: rgba(0, 255, 249, 0.06);
+  background: rgba(121, 104, 179, 0.06);
 }
 
 .celula-nota {
@@ -550,7 +550,7 @@ body.conteudo-pronto .kpi-card:nth-child(3) { animation-delay: 120ms; }
   position: fixed;
   inset: 0;
   z-index: 1500;
-  background: rgba(5, 5, 16, 0.6);
+  background: rgba(7, 5, 18, 0.6);
   backdrop-filter: blur(3px);
   animation: fade-in 200ms ease both;
 }
@@ -951,7 +951,7 @@ body.conteudo-pronto .resumo-executivo {
 }
 
 @keyframes linha-nova-destaque {
-  0% { background: rgba(0, 255, 249, 0.18); }
+  0% { background: rgba(121, 104, 179, 0.18); }
   100% { background: transparent; }
 }
 
