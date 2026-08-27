@@ -6,22 +6,22 @@
 
 :root {
   /* ===== CORES — BASE (mesma paleta do button.css/popup.css) ===== */
-  --color-bg: #050510;
-  --color-surface: #0d0d18;
-  --color-surface-elevated: #12121f;
+  --color-bg: #070512;
+  --color-surface: #0f0c1a;
+  --color-surface-elevated: #151122;
 
-  --color-border: rgba(148, 163, 184, 0.14);
-  --color-border-subtle: rgba(148, 163, 184, 0.08);
+  --color-border: rgba(159, 148, 199, 0.14);
+  --color-border-subtle: rgba(159, 148, 199, 0.08);
   --color-border-focus: var(--color-primary);
 
-  --color-text-primary: #e2e8f0;
-  --color-text-secondary: #a9b1c6;
-  --color-text-muted: #8b93ab;
+  --color-text-primary: #e8e4f4;
+  --color-text-secondary: #b1a8cc;
+  --color-text-muted: #9089ab;
 
   /* ===== CORES — SEMÂNTICAS ===== */
-  --color-primary: #00fff9;
-  --color-primary-hover: #33fffb;
-  --color-primary-active: #00d9d4;
+  --color-primary: #9d8fd6;
+  --color-primary-hover: #b0a4e2;
+  --color-primary-active: #8574c4;
 
   --color-success: #4ade80;
   --color-success-bg: rgba(74, 222, 128, 0.10);
@@ -30,7 +30,7 @@
   --color-danger-bg: rgba(248, 113, 113, 0.10);
 
   --color-warning: #ffb800;
-  --color-info: #00fff9;
+  --color-info: #9d8fd6;
 
   /* ===== ESPAÇAMENTO (escala de 4px) ===== */
   --space-1: 4px;
@@ -95,20 +95,20 @@
    só a paleta.
    ============================================================ */
 [data-theme="light"] {
-  --color-bg: #f4f6fb;
+  --color-bg: #f6f4fb;
   --color-surface: #ffffff;
   --color-surface-elevated: #ffffff;
 
-  --color-border: rgba(15, 23, 42, 0.12);
-  --color-border-subtle: rgba(15, 23, 42, 0.06);
+  --color-border: rgba(30, 22, 58, 0.12);
+  --color-border-subtle: rgba(30, 22, 58, 0.06);
 
-  --color-text-primary: #0f172a;
-  --color-text-secondary: #3f4a5e;
-  --color-text-muted: #6b7688;
+  --color-text-primary: #1d1642;
+  --color-text-secondary: #463d6b;
+  --color-text-muted: #6f6890;
 
-  --color-primary: #0891a8;
-  --color-primary-hover: #0aa5be;
-  --color-primary-active: #077a8d;
+  --color-primary: #7968b3;
+  --color-primary-hover: #8778c0;
+  --color-primary-active: #63539c;
 
   --color-success: #16a34a;
   --color-success-bg: rgba(22, 163, 74, 0.10);

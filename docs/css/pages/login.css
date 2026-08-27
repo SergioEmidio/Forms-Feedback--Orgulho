@@ -9,8 +9,8 @@
    causava aquele "recorte"/emenda visível no fundo. */
 body {
   background:
-    radial-gradient(120% 90% at 15% -10%, rgba(0, 255, 249, 0.10) 0%, transparent 60%),
-    radial-gradient(110% 90% at 100% 110%, rgba(255, 0, 64, 0.08) 0%, transparent 65%),
+    radial-gradient(120% 90% at 15% -10%, rgba(121, 104, 179, 0.10) 0%, transparent 60%),
+    radial-gradient(110% 90% at 100% 110%, rgba(157, 143, 214, 0.08) 0%, transparent 65%),
     var(--color-bg);
   background-attachment: fixed;
 }

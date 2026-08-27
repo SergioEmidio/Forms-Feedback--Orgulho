@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-6);
-  background: rgba(5, 5, 16, .78);
+  background: rgba(7, 5, 18, .78);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   animation: cb-08-popup-overlay-in var(--duration-normal) ease both;
@@ -75,10 +75,10 @@
   --acento: var(--color-primary);
   --acento-ink: var(--color-bg);
   background:
-    radial-gradient(90% 120% at 50% -10%, rgba(0,255,249,.10) 0%, transparent 55%),
+    radial-gradient(90% 120% at 50% -10%, rgba(121,104,179,.10) 0%, transparent 55%),
     linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0)),
     var(--color-surface);
-  border-color: rgba(0,255,249,.2);
+  border-color: rgba(121,104,179,.2);
 }
 
 /* ===== ÍCONE (✓ ou ✗) ===== */
