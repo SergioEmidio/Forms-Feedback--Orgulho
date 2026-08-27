@@ -84,7 +84,7 @@
   --line-height-relaxed: 1.6;
 
   /* ===== LAYOUT ===== */
-  --container-max-width: 720px;
+  --container-max-width: 820px;
   --container-max-width-narrow: 500px; /* usada no popup, alinhada ao card */
 }
 
