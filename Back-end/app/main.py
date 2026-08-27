@@ -25,14 +25,16 @@ app = FastAPI(
 # ============================================================
 # CORS — troque os endereços abaixo pelo domínio real do frontend
 # assim que ele estiver publicado.
+# ==============================================================
+# HOTFIX: permitir temporariamente todas as origens para eliminar
+# falhas de preflight (OPTIONS) que causam 405 no frontend.
+# Depois do deploy e testes OK, troque "allow_origins" por uma
+# lista restrita de domínios (ex: https://seu-usuario.github.io).
 # ============================================================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://127.0.0.1:5500",   # Live Server local
-        "http://localhost:5500",   # Live Server local
-        "https://sergioemidio.github.io",  # GitHub Pages (confirmado)
-    ],
+    allow_origins=["*"],  # permissivo temporário para resolver 405
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -55,3 +57,9 @@ def verificar_saude(db: Session = Depends(obter_db)):
     A rota "/" sozinha não bastava porque não toca no banco."""
     db.execute(text("SELECT 1"))
     return {"status": "ok", "banco": "conectado"}
+
+
+# health endpoint extra usado por alguns provedores/chekcers
+@app.get("/_health")
+def health():
+    return {"status": "ok"}
