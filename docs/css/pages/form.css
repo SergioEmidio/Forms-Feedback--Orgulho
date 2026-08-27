@@ -21,8 +21,10 @@ body {
 
 #cabecalho-projeto img {
   display: block;
-  max-height: 140px;
+  height: clamp(96px, 18vw, 180px);
   width: auto;
+  max-width: 100%;
+  object-fit: contain;
   margin: 0 auto var(--space-4);
   border-radius: var(--radius-xl);
   border: 1px solid var(--color-border);
