@@ -1,17 +1,20 @@
-# gerar_hash.py
-# Script de uso único: gera o hash bcrypt da sua senha + uma chave secreta
-# pro JWT. Rode com: python gerar_hash.py
-# Depois, copie as duas linhas impressas direto pro seu arquivo .env.
-
-import secrets
-
+# app/utils/gerar_hash.py
+# Gera um hash bcrypt a partir de uma senha (não faça commit do .env com senhas)
+import getpass
+import sys
 from passlib.context import CryptContext
 
-contexto = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-senha = input("Digite a senha que você quer usar no login: ")
+def main():
+    if len(sys.argv) >= 2:
+        senha = sys.argv[1]
+    else:
+        # pede a senha sem eco no terminal (você digita e não aparece nada)
+        senha = getpass.getpass("Senha admin (entrada oculta): ")
 
-print("\nCopie estas duas linhas para o seu arquivo .env:\n")
-print(f"ADMIN_SENHA_HASH={contexto.hash(senha)}")
-print(f"JWT_SECRET_KEY={secrets.token_hex(32)}")
-print("\nNão esqueça de adicionar também: ADMIN_USUARIO=escolha_um_usuario")
+    hashed = pwd.hash(senha)
+    print(hashed)
+
+if __name__ == "__main__":
+    main()

@@ -1,33 +1,28 @@
 // services/authServices.js
-// Login e gerenciamento do token de sessão do dashboard.
-// dashboard.js vai usar obterToken()/estaLogado() pra decidir se mostra
-// os dados ou redireciona de volta pro login.
+const BASE_URL = "https://SEUAPP.onrender.com"; // <-- substitua pela sua URL do Render
 
-import { apiPost } from './api.js';
-import { LOGIN_URL } from '../config.js';
-
-const CHAVE_TOKEN = 'dashboard_token';
-
-/**
- * Faz login no backend. Retorna o corpo da resposta (deve conter { token }).
- * @throws {Error} com .status (código HTTP) quando o backend responder com erro
- */
 export async function fazerLogin(usuario, senha) {
-  return apiPost(LOGIN_URL, { usuario, senha });
+  const res = await fetch(`${BASE_URL}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ usuario, senha }),
+  });
+
+  // tenta extrair JSON, mas não quebrar caso a resposta não seja JSON
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    const err = new Error(data.detail || 'Erro ao fazer login');
+    err.status = res.status;
+    err.body = data;
+    throw err;
+  }
+
+  return data; // { token: "..." }
 }
 
 export function salvarToken(token) {
-  sessionStorage.setItem(CHAVE_TOKEN, token);
-}
-
-export function obterToken() {
-  return sessionStorage.getItem(CHAVE_TOKEN);
-}
-
-export function limparToken() {
-  sessionStorage.removeItem(CHAVE_TOKEN);
-}
-
-export function estaLogado() {
-  return !!obterToken();
+  if (!token) return;
+  // você pode usar localStorage, sessionStorage ou cookie seguro
+  localStorage.setItem("token", token);
 }
