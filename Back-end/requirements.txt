@@ -27,3 +27,4 @@ tzdata==2026.3
 uvicorn==0.52.0
 python-jose[cryptography]
 bcrypt==4.2.0
+python-dotenv
