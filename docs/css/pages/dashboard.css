@@ -18,7 +18,7 @@
 #cabecalho-projeto img {
     display: block;
     /* Tamanho controlado e proporcional */
-    height: clamp(350px, 15vw, 300px);
+    height: clamp(300px, 15vw, 350px);
     width: auto;
     max-width: 100%;
     object-fit: contain;

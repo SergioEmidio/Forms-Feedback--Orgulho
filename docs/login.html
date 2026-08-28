@@ -6,9 +6,27 @@
 <title>Login — Área Restrita</title>
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/pages/login.css">
-<link rel="icon" type="image/png" href="../images/Orion Logo - Horizontal.png">
+<link rel="icon" type="image/png" href="images/Orion Logo - Horizontal.png">
 </head>
 <body>
+
+  <!-- DEBUG / FALLBACK: registra erros JS globais e esconde overlay se o carregamento travar -->
+  <script>
+    window.addEventListener('error', e => { console.error('Uncaught error:', e.error || e.message || e); });
+    window.addEventListener('unhandledrejection', e => { console.error('Unhandled promise rejection:', e.reason || e); });
+    document.addEventListener('DOMContentLoaded', function () {
+      try {
+        var overlay = document.getElementById('tela-carregando');
+        if (overlay && !overlay.classList.contains('tela-carregando--escondida')) {
+          overlay.classList.add('tela-carregando--escondida');
+          document.body.classList.add('conteudo-pronto');
+          console.info('[fallback] Overlay escondido via fallback DOMContentLoaded.');
+        }
+      } catch (e) {
+        console.error('Erro no fallback do overlay:', e);
+      }
+    });
+  </script>
 
   <!-- Overlay de carregamento — primeiro elemento do body, sem flash do conteúdo por trás. -->
   <div id="tela-carregando" class="tela-carregando" aria-hidden="false">
@@ -31,7 +49,7 @@
   </script>
   <div id="cabecalho-projeto">
     <!-- Se tiver uma logo, troque o src abaixo. Caso não tenha, pode remover a tag <img>. -->
-    <img src="../images/orion.logo-horizontal-fundo.transparente.png" alt="Orion Logo">
+    <img src="images/orion.logo-horizontal-fundo.transparente.png" alt="Orion Logo">
     
   </div>
 

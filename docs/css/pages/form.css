@@ -21,7 +21,7 @@ body {
 
 #cabecalho-projeto img {
     display: block;
-    height: clamp(320px, 18vw, 180px);
+    height: clamp(180px, 18vw, 320px);
     width: auto;
     max-width: 100%;
     object-fit: contain;
