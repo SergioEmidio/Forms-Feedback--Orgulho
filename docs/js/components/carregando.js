@@ -24,6 +24,12 @@ export function esconderCarregamento() {
   // Libera as animações de entrada do conteúdo da página (ver form.css/login.css) —
   // sem isso, elas rodariam escondidas atrás do overlay e nunca seriam vistas.
   document.body.classList.add('conteudo-pronto');
+  // Remove a classe que esmaece o conteúdo (opacity: 0 em #container-formulario /
+  // #conteudo-dashboard / .login-card — ver carregando.css). Sem isso, depois de
+  // usar mostrarCarregamento() DENTRO da mesma página (ex: resetar o formulário
+  // após um envio com sucesso), o conteúdo ficava invisível pra sempre — só a
+  // logo (que fica fora desses containers) continuava aparecendo na tela.
+  document.body.classList.remove('saindo');
 }
 
 /**
